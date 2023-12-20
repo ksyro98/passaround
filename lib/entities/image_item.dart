@@ -12,7 +12,7 @@ class ImageItem extends Item {
 
   ImageItem.fromMap(Map<String, dynamic> map)
       : imageUrl = map['downloadUrl'],
-        imagePath = map["imagePath"],
+        imagePath = map["path"],
         super.fromMap(map);
 
   @override
@@ -21,7 +21,7 @@ class ImageItem extends Item {
       'id': id,
       'ts': ts,
       'downloadUrl': imageUrl,
-      'imagePath': imagePath,
+      'path': imagePath,
     };
   }
 

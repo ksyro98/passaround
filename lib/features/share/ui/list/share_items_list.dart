@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:passaround/entities/file_item.dart';
 import 'package:passaround/entities/image_item.dart';
 import 'package:passaround/entities/text_item.dart';
 import 'package:passaround/features/share/bloc/share_bloc.dart';
+import 'package:passaround/features/share/ui/list/item_cards/file_item_card.dart';
 import 'package:passaround/features/share/ui/list/item_cards/image_item_card.dart';
 import 'package:passaround/widgets/simple_snack_bar.dart';
 import 'package:passaround/features/share/ui/list/item_cards/text_item_card.dart';
@@ -40,6 +42,8 @@ class _ShareItemsListState extends State<ShareItemsList> {
           return TextItemCard(item: item, onDeletePressed: _deleteItem, showSnackBarMessage: _showCopyMessage);
         } else if (item is ImageItem) {
           return ImageItemCard(item: item, onDownloadPressed: _download, onDeletePressed: _deleteItem);
+        } else if (item is FileItem) {
+          return FileItemCard(item: item, onItemPressed: _download, onDeletePressed: _deleteItem);
         } else {
           return const Empty();
         }

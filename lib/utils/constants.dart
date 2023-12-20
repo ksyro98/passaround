@@ -13,3 +13,7 @@ class AssetValues {
   static const String darkThemeCircularLogo = 'assets/logo_circular_dark_theme.png';
 }
 
+class TypeValues {
+  static const String image = 'image';
+  static const String file = 'file';
+}

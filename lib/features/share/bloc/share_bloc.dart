@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passaround/data_structures/file_info.dart';
 import 'package:passaround/features/share/bloc/share_data_access.dart';
+import 'package:passaround/utils/logger.dart';
 
 import '../../../entities/item.dart';
 
@@ -17,14 +18,6 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
   static const String downloadingError = "An error occurred while downloading your file.";
   static const String deletingError = "An error occurred while deleting your item.";
   static const String unknownError = "An unexpected error occurred. Please try again.";
-
-  // static const String sendingTextSucceeded = "text";
-  // static const String sendingImageSucceeded = "image";
-  // static const String sendingFileSucceeded = "file";
-  // static const String downloadSucceeded = "download";
-  // static const String deleteSucceeded = "delete";
-
-
 
   final ShareDataAccess _dataAccess;
   StreamSubscription<List<Item>>? _itemListener;

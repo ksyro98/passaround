@@ -17,7 +17,7 @@ class ShareStorage {
   Future<ExtendedBool> storeFile(Map<String, dynamic> data, {required bool isImage}) async {
     final String firebasePath = _getStoragePath(
       directories: [PaUser.instance?.id, isImage ? "images" : "files"],
-      fileName: data["ts"].toString(),
+      fileName: isImage ? data["ts"].toString() : FileUtils.getNameWithoutExtension(data["name"]),
       fileExtension: FileUtils.getExtension(data["name"]),
     );
 
@@ -28,7 +28,6 @@ class ShareStorage {
       succeeded = await _storeData(bytes: data["bytes"], firebasePath: firebasePath);
     }
 
-    // final bool succeeded = await _store(bytes: data["bytes"], firebasePath: firebasePath);
     return ExtendedBool(succeeded, detail: firebasePath);
   }
 
@@ -67,6 +66,11 @@ class ShareStorage {
   }
 
   Future<String> getDownloadUrl(String path) async => await _storageRef.child(path).getDownloadURL();
+
+  Future<int> getSize(String path) async {
+    FullMetadata metadata = await _storageRef.child(path).getMetadata();
+    return metadata.size ?? 0;
+  }
 
   Future<void> delete(String path) async {
     await _storageRef.child(path).delete();

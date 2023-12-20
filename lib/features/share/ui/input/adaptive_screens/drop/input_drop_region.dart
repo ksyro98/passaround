@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:passaround/utils/logger.dart';
 import 'package:super_clipboard/src/reader.dart';
 import 'package:super_drag_and_drop/super_drag_and_drop.dart';
@@ -42,7 +41,7 @@ class _InputDropRegionState extends State<InputDropRegion> {
       },
       onPerformDrop: (PerformDropEvent event) async {
         final item = event.session.items.first;
-        final DataReader reader = item.dataReader!;
+        final reader = item.dataReader!;
 
         reader.canProvide(Formats.plainText) ? _manageDroppedText(reader) : _manageDroppedFile(reader);
       },

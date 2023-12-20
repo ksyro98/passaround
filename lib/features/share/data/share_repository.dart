@@ -1,9 +1,10 @@
-
 import 'package:passaround/data_structures/file_info.dart';
 import 'package:passaround/entities/image_item.dart';
 import 'package:passaround/entities/item.dart';
 import 'package:passaround/entities/text_item.dart';
 import 'package:passaround/features/share/bloc/share_data_access.dart';
+import 'package:passaround/utils/constants.dart';
+import 'package:passaround/utils/logger.dart';
 
 import '../../../entities/file_item.dart';
 import 'share_remote_data_provider.dart';
@@ -29,9 +30,9 @@ class ShareRepository implements ShareDataAccess {
   Item? _transformToItem(Map<String, dynamic> data) {
     if (data.containsKey("text")) {
       return TextItem.fromMap(data);
-    } else if (data.containsKey("imagePath")) {
+    } else if (data.containsKey("type") && data["type"] == TypeValues.image) {
       return ImageItem.fromMap(data);
-    } else if (data.containsKey("filePath")) {
+    } else if (data.containsKey("type") && data["type"] == TypeValues.file) {
       return FileItem.fromMap(data);
     } else {
       return null;
@@ -61,7 +62,9 @@ class ShareRepository implements ShareDataAccess {
   @override
   Future<bool> writeFileItem(FileInfo fileInfo) async {
     final Map<String, dynamic> data = {
+      "name": fileInfo.name,
       "path": fileInfo.path,
+      "bytes": fileInfo.bytes,
       "ts": DateTime.now().millisecondsSinceEpoch,
     };
     return await _remoteDataProvider.writeFileItem(data);
@@ -84,6 +87,12 @@ class ShareRepository implements ShareDataAccess {
       Map<String, String> data = {
         "downloadUrl": item.imageUrl,
         "storagePath": item.imagePath,
+      };
+      return await _remoteDataProvider.download(data);
+    } else if (item is FileItem) {
+      Map<String, String> data = {
+        "downloadUrl": item.fileUrl,
+        "storagePath": item.filePath,
       };
       return await _remoteDataProvider.download(data);
     }

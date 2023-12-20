@@ -2,6 +2,7 @@ import 'package:passaround/data_structures/extended_bool.dart';
 import 'package:passaround/features/share/data/firebase/share_firestore.dart';
 import 'package:passaround/features/share/data/firebase/share_storage.dart';
 import 'package:passaround/features/share/data/share_remote_data_provider.dart';
+import 'package:passaround/utils/constants.dart';
 
 class ShareFirebase implements ShareRemoteDataProvider {
   final ShareFirestore _firestore = ShareFirestore();
@@ -18,30 +19,51 @@ class ShareFirebase implements ShareRemoteDataProvider {
 
   @override
   Future<bool> writeImageItem(Map<String, dynamic> data) async {
-    final ExtendedBool res = await _storage.storeFile(data, isImage: true);
+    return await _writeToStorage(data, isImage: true);
+    // final ExtendedBool res = await _storage.storeFile(data, isImage: true);
+    // final bool succeeded = res.value;
+    // final String firebasePath = res.detail;
+    // final String downloadUrl = await _storage.getDownloadUrl(firebasePath);
+    //
+    // if (succeeded) {
+    //   return await _firestore.writeOnSharedCollection({
+    //     "ts": data["ts"],
+    //     "imagePath": firebasePath,
+    //     "downloadUrl": downloadUrl,
+    //   });
+    // }
+    // return false;
+  }
+
+  @override
+  Future<bool> writeFileItem(Map<String, dynamic> data) async {
+    return await _writeToStorage(data, isImage: false);
+  }
+
+  Future<bool> _writeToStorage(Map<String, dynamic> data, {required bool isImage}) async {
+    final ExtendedBool res = await _storage.storeFile(data, isImage: isImage);
     final bool succeeded = res.value;
     final String firebasePath = res.detail;
-    final String downloadUrl = await _storage.getDownloadUrl(firebasePath);
+    final List<dynamic> details = await Future.wait([
+      _storage.getDownloadUrl(firebasePath),
+      _storage.getSize(firebasePath),
+    ]);
+
+    final String downloadUrl = details[0];
+    final int size = details[1];
 
     if (succeeded) {
       return await _firestore.writeOnSharedCollection({
         "ts": data["ts"],
-        "imagePath": firebasePath,
+        "path": firebasePath,
         "downloadUrl": downloadUrl,
+        "size": size,
+        "type": isImage ? TypeValues.image : TypeValues.file,
       });
     }
     return false;
   }
 
-  @override
-  Future<bool> writeFileItem(Map<String, dynamic> data) async {
-    // get file from path
-    // store file on Firebase Storage
-    // get path from Storage (or sth equivalent)
-    // store Storage path on Firestore
-    // on success true, else false
-    return false;
-  }
 
   @override
   Future<bool> deleteItem(String id, {String? path}) async {

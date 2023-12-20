@@ -29,7 +29,7 @@ class DummyItems {
   static final ImageItem dummyImageItem1 = ImageItem.fromMap(const {
     "id": "dummyId1",
     "ts": 1,
-    "imagePath": "dummyPath",
+    "path": "dummyPath",
     "downloadUrl": "dummyUrl",
   });
 
