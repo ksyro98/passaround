@@ -37,6 +37,8 @@ class DummyItems {
   static final FileItem dummyFileItem1 = FileItem.fromMap(const {
     "id": "dummyId1",
     "ts": 1,
-    "filePath": "./something.pdf",
+    "path": "./something.pdf",
+    "downloadUrl": "dummyUrl",
+    "size": 0,
   });
 }
