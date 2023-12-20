@@ -39,13 +39,4 @@ class AuthButtons extends StatelessWidget {
       ],
     );
   }
-
-  Widget _getProgressIndicator(BuildContext context) => SizedBox(
-        width: 14,
-        height: 14,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
-      );
 }
