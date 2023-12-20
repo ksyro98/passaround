@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:passaround/entities/pa_user_manager.dart';
 import 'package:passaround/features/share/bloc/share_bloc.dart';
 import 'package:passaround/features/share/ui/input/share_input_field.dart';
 import 'package:passaround/features/share/ui/list/share_items_list.dart';
@@ -18,7 +19,7 @@ class ShareScreen extends StatefulWidget {
 }
 
 class _ShareScreenState extends State<ShareScreen> {
-  String get _username => PaUser.instance?.username ?? "";
+  PaUser get user => PaUserManager.get().current ?? const PaUser.empty();
 
   @override
   void initState() {
@@ -36,7 +37,7 @@ class _ShareScreenState extends State<ShareScreen> {
           appBar: AppBar(
             title: const Text("PassAround", style: TextStyle(fontSize: 26)),
             actions: [
-              ProfileAction(username: _username, isMobile: isMobile),
+              ProfileAction(userId: user.id, username: user.username, isMobile: isMobile),
             ],
           ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,

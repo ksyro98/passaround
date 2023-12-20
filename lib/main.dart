@@ -7,7 +7,7 @@ import 'package:passaround/features/share/data/firebase/share_firebase.dart';
 import 'package:passaround/navigation/main_go_router.dart';
 import 'package:passaround/features/share/bloc/share_bloc.dart';
 import 'package:passaround/features/share/data/share_repository.dart';
-import 'package:passaround/utils/firebase_utils.dart';
+import 'package:passaround/firebase/firebase_utils.dart';
 import 'package:passaround/utils/constants.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/profile/bloc/profile_bloc.dart';

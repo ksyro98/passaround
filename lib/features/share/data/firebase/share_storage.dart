@@ -3,20 +3,23 @@ import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:passaround/data_structures/extended_bool.dart';
-import 'package:passaround/features/share/data/firebase/firebase_download/mobile_firebase_downloader_factory.dart'
-    if (dart.library.html) 'package:passaround/features/share/data/firebase/firebase_download/web_firebase_downloader_factory.dart';
+import 'package:passaround/firebase/firebase_download/mobile_firebase_downloader_factory.dart'
+    if (dart.library.html) 'package:passaround/firebase/firebase_download/web_firebase_downloader_factory.dart';
+import 'package:passaround/firebase/firebase_id_manager.dart';
 
-import '../../../../entities/pa_user.dart';
+import '../../../../firebase/firebase_download/firebase_downloader_factory.dart';
 import '../../../../utils/file_utils.dart';
 import '../../../../utils/logger.dart';
-import 'firebase_download/firebase_downloader_factory.dart';
 
 class ShareStorage {
   final _storageRef = FirebaseStorage.instance.ref();
 
   Future<ExtendedBool> storeFile(Map<String, dynamic> data, {required bool isImage}) async {
     final String firebasePath = _getStoragePath(
-      directories: [PaUser.instance?.id, isImage ? "images" : "files"],
+      directories: [
+        FirebaseIdManager.get().id,
+        isImage ? "images" : "files",
+      ],
       fileName: isImage ? data["ts"].toString() : FileUtils.getNameWithoutExtension(data["name"]),
       fileExtension: FileUtils.getExtension(data["name"]),
     );

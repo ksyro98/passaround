@@ -26,15 +26,17 @@ class _ProfileScreeState extends State<ProfileScreen> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
+  PaUser? get currentUser => context.read<ProfileBloc>().currentUser;
+
   @override
   void initState() {
     super.initState();
     navigateAwayIfLoggedOut(context);
 
-    if (widget.id == PaUser.instance?.id) {
+    if (widget.id == currentUser?.id) {
       context.read<ProfileBloc>().add(const ProfileSameUserDetected());
-      usernameController.text = PaUser.instance?.username ?? "";
-      emailController.text = PaUser.instance?.email ?? "";
+      usernameController.text = currentUser?.username ?? "";
+      emailController.text = currentUser?.email ?? "";
     }
   }
 

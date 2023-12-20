@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:passaround/firebase/firebase_id_manager.dart';
 
-import '../../../../entities/pa_user.dart';
-import '../../../../utils/firebase_utils.dart';
+import '../../../../firebase/firebase_utils.dart';
 import '../../../../utils/logger.dart';
 
 class ShareFirestore {
   CollectionReference<Map<String, dynamic>> get _sharedCollection {
-    String documentId = PaUser.instance?.id ?? FirebaseUtils.defaultDocumentId;
+    String documentId = FirebaseIdManager.get().id;
     return FirebaseFirestore.instance
         .collection(FirebaseUtils.userItemsCollectionName)
         .doc(documentId)

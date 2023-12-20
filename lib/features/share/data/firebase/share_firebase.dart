@@ -20,19 +20,6 @@ class ShareFirebase implements ShareRemoteDataProvider {
   @override
   Future<bool> writeImageItem(Map<String, dynamic> data) async {
     return await _writeToStorage(data, isImage: true);
-    // final ExtendedBool res = await _storage.storeFile(data, isImage: true);
-    // final bool succeeded = res.value;
-    // final String firebasePath = res.detail;
-    // final String downloadUrl = await _storage.getDownloadUrl(firebasePath);
-    //
-    // if (succeeded) {
-    //   return await _firestore.writeOnSharedCollection({
-    //     "ts": data["ts"],
-    //     "imagePath": firebasePath,
-    //     "downloadUrl": downloadUrl,
-    //   });
-    // }
-    // return false;
   }
 
   @override
@@ -63,7 +50,6 @@ class ShareFirebase implements ShareRemoteDataProvider {
     }
     return false;
   }
-
 
   @override
   Future<bool> deleteItem(String id, {String? path}) async {

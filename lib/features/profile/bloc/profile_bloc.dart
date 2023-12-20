@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:passaround/entities/pa_user_manager.dart';
 import 'package:passaround/features/profile/bloc/profile_data_access.dart';
 
 import '../../../data_structures/change_request.dart';
@@ -12,6 +13,8 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileDataAccess _dataAccess;
 
+  PaUser? get currentUser => PaUserManager.get().current;
+
   ProfileBloc(this._dataAccess) : super(const ProfileState.initial()) {
     on<ProfileSameUserDetected>(_onSameUserDetected);
     on<ProfileEditRequested>(_onEditRequested);
@@ -22,7 +25,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   void _onSameUserDetected(ProfileSameUserDetected event, Emitter<ProfileState> emit) {
-    ProfileState newState = state.copyWith(value: ProfileStateValue.ready, user: PaUser.instance);
+    ProfileState newState = state.copyWith(value: ProfileStateValue.ready, user: currentUser);
     emit(newState);
   }
 
@@ -39,7 +42,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   void _onEditSucceeded(ProfileEditSucceeded event, Emitter<ProfileState> emit) {
-    PaUser.set(event.updatedUser);
+    PaUserManager.get().current = event.updatedUser;
     ProfileState newState = state.copyWith(value: ProfileStateValue.ready, user: event.updatedUser);
     emit(newState);
   }
@@ -58,7 +61,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<void> _onLogOutRequested(ProfileLogOutRequested event, Emitter<ProfileState> emit) async {
     await _dataAccess.logOut();
-    PaUser.unset();
+    PaUserManager.get().current = null;
     ProfileState newState = state.copyWith(value: ProfileStateValue.loggedOut);
     emit(newState);
   }

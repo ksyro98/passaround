@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:passaround/entities/pa_user.dart';
+import 'package:passaround/entities/pa_user_manager.dart';
 import 'package:passaround/features/share/ui/top_app_bar/profile/profile_icon.dart';
 import 'package:passaround/features/share/ui/top_app_bar/profile/profile_name_and_icon.dart';
 import 'package:passaround/navigation/auth/log_in_go_route.dart';
@@ -8,9 +8,10 @@ import 'package:passaround/navigation/profile_go_route.dart';
 
 class ProfileAction extends StatefulWidget {
   final String username;
+  final String userId;
   final bool isMobile;
 
-  const ProfileAction({super.key, required this.username, required this.isMobile});
+  const ProfileAction({super.key, required this.userId, required this.username, required this.isMobile});
 
   @override
   State<ProfileAction> createState() => _ProfileActionState();
@@ -32,10 +33,8 @@ class _ProfileActionState extends State<ProfileAction> {
   }
 
   void _navigateToUserDetails() {
-    if (PaUser.instance != null) {
-      GoRouter.of(context).pushNamed(ProfileGoRoute.name, pathParameters: {
-        "id": PaUser.instance?.id ?? "",
-      });
+    if (PaUserManager.get().isLoggedIn()) {
+      GoRouter.of(context).pushNamed(ProfileGoRoute.name, pathParameters: {"id": widget.userId});
     } else {
       GoRouter.of(context).goNamed(LogInGoRoute.name);
     }

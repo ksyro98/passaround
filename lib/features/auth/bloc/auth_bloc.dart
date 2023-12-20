@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passaround/data_structures/extended_bool.dart';
+import 'package:passaround/entities/pa_user_manager.dart';
 
 import '../../../data_structures/either.dart';
 import '../../../entities/pa_user.dart';
@@ -72,7 +73,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onSucceeded(AuthSucceeded event, Emitter<AuthState> emit) {
-    PaUser.set(event.user);
+    PaUserManager.get().current = event.user;
 
     final AuthState newState = state.copyWith(value: AuthStateValue.loggedIn, error: "");
     emit(newState);

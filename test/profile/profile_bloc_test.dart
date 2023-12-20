@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:passaround/data_structures/change_request.dart';
-import 'package:passaround/entities/pa_user.dart';
+import 'package:passaround/entities/pa_user_manager.dart';
 import 'package:passaround/features/profile/bloc/profile_bloc.dart';
 import 'package:passaround/features/profile/bloc/profile_data_access.dart';
 
@@ -11,7 +11,7 @@ import 'mock_profile_data_access.dart';
 void main() {
   group("happy path", () {
     const ProfileDataAccess dataAccess = MockProfileDataAccess(shouldSucceed: true);
-    setUp(() => PaUser.set(DummyPaUser.get()));
+    setUp(() => PaUserManager.get().current = DummyPaUser.get());
 
     blocTest("loads same user",
         build: () => ProfileBloc(dataAccess),
@@ -29,7 +29,7 @@ void main() {
         ProfileState(ProfileStateValue.editing, DummyPaUser.get(), ""),
         ProfileState(ProfileStateValue.ready, DummyPaUser.getWithEmail("dummyEmail2"), ""),
       ],
-      verify: (_) => expect(PaUser.instance?.email, "dummyEmail2"),
+      verify: (_) => expect(PaUserManager.get().current?.email, "dummyEmail2"),
     );
 
     blocTest(
@@ -40,13 +40,13 @@ void main() {
       expect: () => [
         ProfileState(ProfileStateValue.loggedOut, DummyPaUser.get(), ""),
       ],
-      verify: (_) => expect(PaUser.instance, null),
+      verify: (_) => expect(PaUserManager.get().current, null),
     );
   });
 
   group("with errors", () {
     const ProfileDataAccess dataAccess = MockProfileDataAccess(shouldSucceed: false);
-    setUp(() => PaUser.set(DummyPaUser.get()));
+    setUp(() => PaUserManager.get().current = DummyPaUser.get());
 
     blocTest(
       "editing user fails",
@@ -58,7 +58,7 @@ void main() {
         ProfileState(ProfileStateValue.error, DummyPaUser.get(), "Update error"),
         ProfileState(ProfileStateValue.ready, DummyPaUser.get(), ""),
       ],
-      verify: (_) => expect(PaUser.instance?.email, "dummyEmail"),
+      verify: (_) => expect(PaUserManager.get().current?.email, "dummyEmail"),
     );
   });
 }

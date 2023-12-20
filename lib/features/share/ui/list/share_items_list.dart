@@ -53,11 +53,15 @@ class _ShareItemsListState extends State<ShareItemsList> {
 
   void _deleteItem(Item item) => context.read<ShareBloc>().add(ShareDeleted(item));
 
-  void _showCopyMessage(String message) => SimpleSnackBar.show(
-        context,
-        message,
-        duration: const Duration(milliseconds: 2000),
-      );
+  void _showCopyMessage(String message) {
+    // TODO remove double notification on copy in Android version 13+
+    // https://developer.android.com/develop/ui/views/touch-and-input/copy-paste
+    SimpleSnackBar.show(
+      context,
+      message,
+      duration: const Duration(milliseconds: 2000),
+    );
+  }
 
   void _download(Item item) => context.read<ShareBloc>().add(ShareDownloadRequested(item));
 }

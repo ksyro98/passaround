@@ -1,6 +1,6 @@
-import 'package:passaround/features/share/data/firebase/firebase_download/firebase_downloader_factory.dart';
-import 'package:passaround/features/share/data/firebase/firebase_download/firebase_downloader.dart';
-import 'package:passaround/features/share/data/firebase/firebase_download/web_firebase_downloader.dart';
+import 'package:passaround/firebase/firebase_download/web_firebase_downloader.dart';
+import 'firebase_downloader.dart';
+import 'firebase_downloader_factory.dart';
 
 class ConcreteFirebaseDownloaderFactory extends FirebaseDownloaderFactory {
   const ConcreteFirebaseDownloaderFactory({

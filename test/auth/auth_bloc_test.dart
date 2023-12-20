@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:passaround/entities/pa_user.dart';
+import 'package:passaround/entities/pa_user_manager.dart';
 import 'package:passaround/features/auth/bloc/auth_bloc.dart';
 import 'package:passaround/features/auth/bloc/auth_data_access.dart';
 
@@ -19,7 +19,7 @@ void main() {
         const AuthState(AuthStateValue.loading, ""),
         const AuthState(AuthStateValue.loggedIn, ""),
       ],
-      verify: (_) => expect(PaUser.instance?.email, "dummyEmail"),
+      verify: (_) => expect(PaUserManager.get().current?.email, "dummyEmail"),
     );
 
     blocTest(
@@ -31,8 +31,8 @@ void main() {
         const AuthState(AuthStateValue.loggedIn, ""),
       ],
       verify: (_) {
-        expect(PaUser.instance?.username, "dummyUsername");
-        expect(PaUser.instance?.email, "dummyEmail");
+        expect(PaUserManager.get().current?.username, "dummyUsername");
+        expect(PaUserManager.get().current?.email, "dummyEmail");
       },
     );
 
