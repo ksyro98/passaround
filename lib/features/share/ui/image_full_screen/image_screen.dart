@@ -15,6 +15,9 @@ class ImageScreen extends StatefulWidget {
 }
 
 class _ImageScreenState extends State<ImageScreen> {
+  TapDownDetails _doubleTapDetails = TapDownDetails();
+  final TransformationController _transformationController = TransformationController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,12 +34,17 @@ class _ImageScreenState extends State<ImageScreen> {
           const SizedBox(width: 24),
         ],
       ),
-      body: InteractiveViewer(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 40),
-            child: Image.network(
-              widget.item.imageUrl,
+      body: GestureDetector(
+        onDoubleTapDown: (d) => _doubleTapDetails = d,
+        onDoubleTap: _handleDoubleTap,
+        child: InteractiveViewer(
+          transformationController: _transformationController,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 40),
+              child: Image.network(
+                widget.item.imageUrl,
+              ),
             ),
           ),
         ),
@@ -53,4 +61,18 @@ class _ImageScreenState extends State<ImageScreen> {
   void _download() {
     context.read<ShareBloc>().add(ShareDownloadRequested(widget.item));
   }
+
+  // from https://stackoverflow.com/questions/65408346/flutter-enable-image-zoom-in-out-on-double-tap-using-interactiveviewer
+  void _handleDoubleTap() {
+    if (_transformationController.value != Matrix4.identity()) {
+      _transformationController.value = Matrix4.identity();
+    } else {
+      final position = _doubleTapDetails.localPosition;
+      // 3x zoom
+      _transformationController.value = Matrix4.identity()
+        ..translate(-position.dx * 2, -position.dy * 2)
+        ..scale(3.0);
+    }
+  }
 }
+
