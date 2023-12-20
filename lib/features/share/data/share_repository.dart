@@ -4,7 +4,6 @@ import 'package:passaround/entities/item.dart';
 import 'package:passaround/entities/text_item.dart';
 import 'package:passaround/features/share/bloc/share_data_access.dart';
 import 'package:passaround/utils/constants.dart';
-import 'package:passaround/utils/logger.dart';
 
 import '../../../entities/file_item.dart';
 import 'share_remote_data_provider.dart';

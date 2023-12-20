@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passaround/data_structures/file_info.dart';
 import 'package:passaround/features/share/bloc/share_data_access.dart';
-import 'package:passaround/utils/logger.dart';
 
 import '../../../entities/item.dart';
 
