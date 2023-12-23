@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:passaround/entities/text_item.dart';
+import 'package:passaround/utils/links_in_text/linkable_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../entities/item.dart';
 import 'item_card_base.dart';
@@ -24,10 +26,16 @@ class TextItemCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: SelectableText(
+            child: LinkableText(
               item.text,
+              onLinkPressed: _onLinkTap,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
+              linkTextStyle: const TextStyle(decoration: TextDecoration.underline),
             ),
+            // child: SelectableText(
+            //   item.text,
+            //   style: const TextStyle(overflow: TextOverflow.ellipsis),
+            // ),
           ),
           Row(
             children: [
@@ -45,6 +53,13 @@ class TextItemCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _onLinkTap(String href) async {
+    final Uri uri = Uri.parse(href);
+    if(await canLaunchUrl(uri)) {
+      launchUrl(uri);
+    }
   }
 
   Future<void> _copyTextToClipboard() async {
