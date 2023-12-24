@@ -1,6 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:passaround/data_structures/file_info.dart';
 import 'package:passaround/features/share/ui/input/adaptive_screens/widgets/paste_button.dart';
+
+import 'package:passaround/utils/web/non_web_utils.dart'
+    if (dart.library.html) 'package:passaround/utils/web/web_utils.dart';
+import 'package:passaround/utils/web/web_utils_interface.dart';
 
 import '../../../../../utils/super_library_family/drag_drop/input_drop_region.dart';
 
@@ -87,19 +92,20 @@ class _LargeScreenShareInputFieldState extends State<LargeScreenShareInputField>
                 ),
               ],
             ),
-            const SizedBox(height: 40),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("or even... paste an image", style: TextStyle(fontSize: 14)),
-                const SizedBox(height: 8),
-                PasteButton(
-                  isDisabled: _isDisabled,
-                  onTextPasted: (text) => setState(() => widget.itemTextController.text += text),
-                  onImagePasted: widget.sendAddedFile,
-                ),
-              ],
-            )
+            SizedBox(height: _canPasteImages() ? 40 : 8),
+            if (_canPasteImages())
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("or even... paste an image", style: TextStyle(fontSize: 14)),
+                  const SizedBox(height: 8),
+                  PasteButton(
+                    isDisabled: _isDisabled,
+                    onTextPasted: (text) => setState(() => widget.itemTextController.text += text),
+                    onImagePasted: widget.sendAddedFile,
+                  ),
+                ],
+              )
           ],
         ),
       ),
@@ -110,5 +116,10 @@ class _LargeScreenShareInputFieldState extends State<LargeScreenShareInputField>
     setState(() => _fileSelectionLoading = true);
     await widget.selectAndSendFile();
     setState(() => _fileSelectionLoading = false);
+  }
+
+  bool _canPasteImages() {
+    final WebUtilsInterface webUtils = WebUtils();
+    return kIsWeb && !webUtils.isFirefox();
   }
 }

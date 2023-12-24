@@ -5,35 +5,8 @@ import 'package:super_clipboard/super_clipboard.dart';
 
 import '../../../../../../data_structures/file_info.dart';
 
-// class PasteContainer extends StatelessWidget with Pasteable {
-//   final void Function(String) onTextPasted;
-//   final void Function(FileInfo) onImagePasted;
-//
-//   const PasteContainer({
-//     super.key,
-//     required this.onTextPasted,
-//     required this.onImagePasted,
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return IconButton(
-//       onPressed: () async {
-//         final clipboard = SystemClipboard.instance;
-//         if (clipboard != null) {
-//           final reader = await clipboard.read();
-//           _paste(reader);
-//         }
-//       },
-//       icon: const Icon(Icons.paste),
-//     );
-//   }
-// }
 
 mixin Pasteable {
-  // void onTextPasted(String value);
-  // void onImagePasted(FileInfo fileInfo);
-
   FutureOr<void> paste({
     required void Function(String) onTextPasted,
     required void Function(FileInfo) onImagePasted,
