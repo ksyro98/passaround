@@ -1,7 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:passaround/utils/logger.dart';
+import 'package:passaround/data_structures/file_info.dart';
+import 'package:passaround/utils/super_library_family/super_file_manager.dart';
 import 'package:super_clipboard/src/reader.dart';
 import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 
@@ -9,15 +8,15 @@ import 'drop_hover_visual.dart';
 
 class InputDropRegion extends StatefulWidget {
   final Widget child;
-  final void Function(String) sendTextItem;
-  final void Function(Uint8List, String) sendImageOrFile;
+  final void Function(String) onTextDropped;
+  final void Function(FileInfo) onImageOrFileDropped;
   final void Function() onError;
 
   const InputDropRegion({
     super.key,
     required this.child,
-    required this.sendTextItem,
-    required this.sendImageOrFile,
+    required this.onTextDropped,
+    required this.onImageOrFileDropped,
     required this.onError,
   });
 
@@ -41,9 +40,12 @@ class _InputDropRegionState extends State<InputDropRegion> {
       },
       onPerformDrop: (PerformDropEvent event) async {
         final item = event.session.items.first;
-        final reader = item.dataReader!;
+        final DataReader? reader = item.dataReader;
 
-        reader.canProvide(Formats.plainText) ? _manageDroppedText(reader) : _manageDroppedFile(reader);
+        if(reader != null) {
+          final SuperFileManager fileManager = SuperFileManager(reader);
+          fileManager.containsPlainText() ? _manageDroppedText(fileManager) : _manageDroppedFile(fileManager);
+        }
       },
       child: Stack(
         children: [
@@ -54,28 +56,11 @@ class _InputDropRegionState extends State<InputDropRegion> {
     );
   }
 
-  void _manageDroppedText(DataReader reader) {
-    reader.getValue<String>(
-      Formats.plainText,
-      (value) {
-        if (value != null) {
-          widget.sendTextItem(value);
-        }
-      },
-      onError: (error) {
-        Logger.ePrint(error);
-        widget.onError();
-      },
-    );
+  void _manageDroppedText(SuperFileManager fileManager) {
+    fileManager.readText((value) => widget.onTextDropped(value), onError: (_) => widget.onError());
   }
 
-  void _manageDroppedFile(DataReader reader) {
-    final List<DataFormat<Object>> formats =
-        Formats.standardFormats.where((format) => format is FileFormat && reader.canProvide(format)).toList();
-
-    reader.getFile(formats[0] as FileFormat, (file) async {
-      final Uint8List bytes = await file.readAll();
-      widget.sendImageOrFile(bytes, file.fileName ?? "");
-    });
+  void _manageDroppedFile(SuperFileManager fileManager) {
+    fileManager.readGenericFile((fileInfo) =>  widget.onImageOrFileDropped(fileInfo));
   }
 }

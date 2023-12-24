@@ -35,7 +35,7 @@ class _ShareInputFieldState extends State<ShareInputField> {
             sending: widget.state.value == ShareStateValue.sending,
             sendTextItem: _sendTextItem,
             selectAndSendFile: _selectAndSendFile,
-            sendDroppedFile: _sendDroppedFile,
+            sendAddedFile: _sendAddedFile,
             onError: _onError,
           );
   }
@@ -64,13 +64,8 @@ class _ShareInputFieldState extends State<ShareInputField> {
     }
   }
 
-  void _sendDroppedFile(Uint8List bytes, String fileName) async {
-    if(fileName != "") {
-      final FileInfo fileInfo = FileInfo(
-          name: fileName,
-          bytes: bytes
-      );
-
+  void _sendAddedFile(FileInfo fileInfo) async {
+    if (fileInfo.name != "") {
       _manageSelectedFile(fileInfo);
     }
   }

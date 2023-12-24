@@ -1,14 +1,16 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:passaround/features/share/ui/input/adaptive_screens/drop/input_drop_region.dart';
+import 'package:passaround/data_structures/file_info.dart';
+import 'package:passaround/features/share/ui/input/adaptive_screens/widgets/paste_button.dart';
+
+import '../../../../../utils/super_library_family/copy_paste/pasteable.dart';
+import '../../../../../utils/super_library_family/drag_drop/input_drop_region.dart';
 
 class LargeScreenShareInputField extends StatefulWidget {
   final TextEditingController itemTextController;
   final bool sending;
   final void Function({String? text}) sendTextItem;
   final Future<void> Function() selectAndSendFile;
-  final void Function(Uint8List, String) sendDroppedFile;
+  final void Function(FileInfo) sendAddedFile;
   final void Function() onError;
 
   const LargeScreenShareInputField({
@@ -17,7 +19,7 @@ class LargeScreenShareInputField extends StatefulWidget {
     required this.sending,
     required this.sendTextItem,
     required this.selectAndSendFile,
-    required this.sendDroppedFile,
+    required this.sendAddedFile,
     required this.onError,
   });
 
@@ -33,8 +35,8 @@ class _LargeScreenShareInputFieldState extends State<LargeScreenShareInputField>
   @override
   Widget build(BuildContext context) {
     return InputDropRegion(
-      sendTextItem: (text) => widget.sendTextItem(text: text),
-      sendImageOrFile: widget.sendDroppedFile,
+      onTextDropped: (text) => widget.sendTextItem(text: text),
+      onImageOrFileDropped: widget.sendAddedFile,
       onError: widget.onError,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8, 8, 36, 8),
@@ -43,11 +45,11 @@ class _LargeScreenShareInputFieldState extends State<LargeScreenShareInputField>
           children: [
             const Text("Let's pass around something awesome!", style: TextStyle(fontSize: 20)),
             const SizedBox(height: 4),
-            const Text("Just type it below and click on the really cool button :)", style: TextStyle(fontSize: 14)),
-            const SizedBox(height: 16),
+            const Text('Just type it below and click "Send"', style: TextStyle(fontSize: 14)),
+            const SizedBox(height: 8),
             TextField(
               controller: widget.itemTextController,
-              maxLines: 8,
+              maxLines: 6,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
@@ -62,7 +64,7 @@ class _LargeScreenShareInputFieldState extends State<LargeScreenShareInputField>
                 )
               ],
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 36),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -80,10 +82,25 @@ class _LargeScreenShareInputFieldState extends State<LargeScreenShareInputField>
                             onPressed: _isDisabled ? null : _onFileSelectionPressed,
                             child: const Text("Upload Image or File"),
                           ),
+                    const SizedBox(height: 4),
+                    const Text("You can also drag and drop it here :)", style: TextStyle(fontSize: 12)),
                   ],
                 ),
               ],
             ),
+            const SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("or even... paste an image", style: TextStyle(fontSize: 14)),
+                const SizedBox(height: 8),
+                PasteButton(
+                  isDisabled: _isDisabled,
+                  onTextPasted: (text) => setState(() => widget.itemTextController.text += text),
+                  onImagePasted: widget.sendAddedFile,
+                ),
+              ],
+            )
           ],
         ),
       ),
