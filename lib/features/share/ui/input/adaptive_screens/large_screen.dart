@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:passaround/data_structures/file_info.dart';
 import 'package:passaround/features/share/ui/input/adaptive_screens/widgets/paste_button.dart';
 
-import '../../../../../utils/super_library_family/copy_paste/pasteable.dart';
 import '../../../../../utils/super_library_family/drag_drop/input_drop_region.dart';
 
 class LargeScreenShareInputField extends StatefulWidget {
