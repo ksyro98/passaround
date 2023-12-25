@@ -23,8 +23,10 @@ class FirebaseAuthentication implements AuthRemoteDataProvider {
         "email": email,
       };
     } on FirebaseAuthException catch (e) {
+      Logger.ePrint(e);
       return _getLogInError(e);
     } catch (e) {
+      Logger.ePrint(e);
       return _getUnknownError();
     }
   }
@@ -50,8 +52,10 @@ class FirebaseAuthentication implements AuthRemoteDataProvider {
         "email": email,
       };
     } on FirebaseAuthException catch (e) {
+      Logger.ePrint(e);
       return _getSignUpError(e);
     } catch (e) {
+      Logger.ePrint(e);
       return _getUnknownError();
     }
   }
@@ -68,7 +72,7 @@ class FirebaseAuthentication implements AuthRemoteDataProvider {
   }
 
   Map<String, String> _getLogInError(FirebaseAuthException e) {
-    if (e.code == "invalid-login-credentials") {
+    if (e.code == "invalid-credential") {
       return {"error": _invalidLogInCredentials};
     } else {
       return _getUnknownError();

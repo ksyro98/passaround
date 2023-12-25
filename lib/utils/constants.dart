@@ -17,3 +17,7 @@ class TypeValues {
   static const String image = 'image';
   static const String file = 'file';
 }
+
+class AuthValues {
+  static final RegExp emailRegExp = RegExp(r"^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$");
+}

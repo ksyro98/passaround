@@ -25,6 +25,7 @@ class AuthBaseScreen extends StatefulWidget {
   final String primaryButtonText;
   final void Function({String? username, required String email, required String password}) onPrimaryButtonClick;
   final String? secondaryButtonText;
+  final String? secondaryButtonDescription;
   final void Function({String? username, required String email, required String password})? onSecondaryButtonClick;
   final String startingUsername;
   final String startingEmail;
@@ -41,6 +42,7 @@ class AuthBaseScreen extends StatefulWidget {
     required this.primaryButtonText,
     required this.onPrimaryButtonClick,
     this.secondaryButtonText,
+    this.secondaryButtonDescription,
     this.onSecondaryButtonClick,
     this.startingUsername = "",
     this.startingEmail = "",
@@ -52,6 +54,7 @@ class AuthBaseScreen extends StatefulWidget {
 }
 
 class _AuthBaseScreenState extends State<AuthBaseScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -93,19 +96,26 @@ class _AuthBaseScreenState extends State<AuthBaseScreen> {
                     AuthHeaderText(widget.authHeaderText),
                     const SizedBox(height: 10),
                     AuthFields(
+                      formKey: _formKey,
                       usernameController: _usernameController,
                       emailController: _emailController,
                       passwordController: _passwordController,
                       excludeUsernameField: widget.excludeUsernameField,
                       excludeEmailField: widget.excludeEmailField,
                       excludePasswordField: widget.excludePasswordField,
+                      onEnterPressedAtPassword: () => widget.onPrimaryButtonClick(
+                        username: _usernameController.text,
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      ),
                     ),
                     const SizedBox(height: 2),
                     if (widget.includeRecoverPasswordText)
                       RecoverPasswordText(onPress: _navigateToRecoverPasswordScreen),
                     if (widget.includePasswordStrengthText) const PasswordStrengthText(),
-                    const SizedBox(height: 26),
+                    const SizedBox(height: 12),
                     AuthButtons(
+                      formKey: _formKey,
                       primaryButtonText: widget.primaryButtonText,
                       onPrimaryButtonClick: () => widget.onPrimaryButtonClick(
                         username: _usernameController.text,
@@ -113,8 +123,9 @@ class _AuthBaseScreenState extends State<AuthBaseScreen> {
                         password: _passwordController.text,
                       ),
                       secondaryButtonText: widget.secondaryButtonText,
+                      secondaryButtonDescription: widget.secondaryButtonDescription,
                       onSecondaryButtonClick: () {
-                        if(widget.onSecondaryButtonClick != null) {
+                        if (widget.onSecondaryButtonClick != null) {
                           widget.onSecondaryButtonClick!(
                             username: _usernameController.text,
                             email: _emailController.text,

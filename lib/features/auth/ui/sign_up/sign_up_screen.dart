@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:passaround/features/auth/ui/sign_up/navigation_warning.dart';
 import 'package:passaround/navigation/auth/auth_extras.dart';
 
 import '../../../../navigation/auth/log_in_go_route.dart';
@@ -28,6 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       primaryButtonText: "Sign Up",
       onPrimaryButtonClick: _signUp,
       secondaryButtonText: "Log In",
+      secondaryButtonDescription: "Already have an account?",
       onSecondaryButtonClick: _navigateToLogInScreen,
       startingEmail: widget.email,
       startingPassword: widget.password,
@@ -45,9 +48,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String? username,
     required String email,
     required String password,
-  }) =>
-      GoRouter.of(context).pushNamed(
-        LogInGoRoute.name,
-        extra: AuthExtras(email: email, password: password),
-      );
+  }) {
+    final bool shouldWarnUser = (username ?? "") != "" && email != "" && password != "";
+    if (shouldWarnUser) {
+      NavigationWarning(
+        context: context,
+        onConfirm: () => _navigate(email, password),
+      ).show();
+    } else {
+      _navigate(email, password);
+    }
+  }
+
+  void _navigate(String email, String password) {
+    GoRouter.of(context).pushNamed(
+      LogInGoRoute.name,
+      extra: AuthExtras(email: email, password: password),
+    );
+  }
 }

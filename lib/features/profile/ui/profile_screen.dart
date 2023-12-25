@@ -23,6 +23,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreeState extends State<ProfileScreen> {
   bool allowEdit = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
@@ -71,6 +72,7 @@ class _ProfileScreeState extends State<ProfileScreen> {
                       CircledLetter(letter: state.user?.username.characters.first.toUpperCase() ?? "U"),
                       const SizedBox(height: 60),
                       AuthFields(
+                        formKey: _formKey,
                         usernameController: usernameController,
                         emailController: emailController,
                         passwordController: TextEditingController(),

@@ -28,6 +28,7 @@ class _LogInScreenState extends State<LogInScreen> {
       primaryButtonText: "Log In",
       onPrimaryButtonClick: _logIn,
       secondaryButtonText: "Sign Up",
+      secondaryButtonDescription: "Don't have an account yet?",
       onSecondaryButtonClick: _navigateToSignUpScreen,
       startingEmail: widget.email,
       startingPassword: widget.password,
