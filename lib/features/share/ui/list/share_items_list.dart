@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passaround/entities/file_item.dart';
 import 'package:passaround/entities/image_item.dart';
@@ -6,17 +9,22 @@ import 'package:passaround/entities/text_item.dart';
 import 'package:passaround/features/share/bloc/share_bloc.dart';
 import 'package:passaround/features/share/ui/list/item_cards/file_item_card.dart';
 import 'package:passaround/features/share/ui/list/item_cards/image_item_card.dart';
+import 'package:passaround/utils/constants.dart';
+import 'package:passaround/utils/native/channels_api.dart';
 import 'package:passaround/widgets/simple_snack_bar.dart';
 import 'package:passaround/features/share/ui/list/item_cards/text_item_card.dart';
 import 'package:passaround/widgets/loading_indicator.dart';
 
 import '../../../../entities/item.dart';
+import '../../../../utils/native/native_api.dart';
+import '../../../../utils/native/native_version.dart';
 import '../../../../widgets/empty.dart';
 
 class ShareItemsList extends StatefulWidget {
   final ShareState state;
+  final PaNativeApi nativeApi;
 
-  const ShareItemsList({super.key, required this.state});
+  const ShareItemsList({super.key, required this.state, this.nativeApi = const ChannelsApi()});
 
   @override
   State<ShareItemsList> createState() => _ShareItemsListState();
@@ -53,14 +61,28 @@ class _ShareItemsListState extends State<ShareItemsList> {
 
   void _deleteItem(Item item) => context.read<ShareBloc>().add(ShareDeleted(item));
 
-  void _showCopyMessage(String message) {
-    // TODO remove double notification on copy in Android version 13+
-    // https://developer.android.com/develop/ui/views/touch-and-input/copy-paste
-    SimpleSnackBar.show(
-      context,
-      message,
-      duration: const Duration(milliseconds: 2000),
-    );
+  void _showCopyMessage(String message) async {
+    if (await _shouldDisplayToast()) {
+      if(!mounted) return;  // Do not use BuildContexts across async gaps: https://dart.dev/tools/linter-rules/use_build_context_synchronously
+      SimpleSnackBar.show(
+        context,
+        message,
+        duration: const Duration(milliseconds: 2000),
+      );
+    }
+  }
+
+  Future<bool> _shouldDisplayToast() async {
+    if(kIsWeb) {
+      return true;
+    }
+    else if (Platform.isAndroid) {
+      final NativeVersion nativeVersion = await widget.nativeApi.getVersion();
+      if (int.parse(nativeVersion.version) > NativeValues.androidApi12LVersionCode) {
+        return false;
+      }
+    }
+    return true;
   }
 
   void _download(Item item) => context.read<ShareBloc>().add(ShareDownloadRequested(item));

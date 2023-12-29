@@ -21,3 +21,7 @@ class TypeValues {
 class AuthValues {
   static final RegExp emailRegExp = RegExp(r"^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$");
 }
+
+class NativeValues {
+  static const int androidApi12LVersionCode = 32;
+}
