@@ -6,7 +6,6 @@ import 'package:passaround/features/share/ui/input/share_input_field.dart';
 import 'package:passaround/features/share/ui/list/share_items_list.dart';
 import 'package:passaround/features/share/ui/top_app_bar/profile/profile_action.dart';
 import 'package:passaround/navigation/utils/functions.dart';
-import 'package:passaround/utils/native/native_api_provider.dart';
 
 import '../../../entities/pa_user.dart';
 import '../../../utils/constants.dart';

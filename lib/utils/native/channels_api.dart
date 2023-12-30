@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:passaround/utils/logger.dart';
 import 'package:passaround/utils/native/native_api.dart';
 
 import 'native_version.dart';
