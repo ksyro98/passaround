@@ -10,21 +10,19 @@ import 'package:passaround/features/share/bloc/share_bloc.dart';
 import 'package:passaround/features/share/ui/list/item_cards/file_item_card.dart';
 import 'package:passaround/features/share/ui/list/item_cards/image_item_card.dart';
 import 'package:passaround/utils/constants.dart';
-import 'package:passaround/utils/native/channels_api.dart';
+import 'package:passaround/utils/native/native_api_provider.dart';
 import 'package:passaround/widgets/simple_snack_bar.dart';
 import 'package:passaround/features/share/ui/list/item_cards/text_item_card.dart';
 import 'package:passaround/widgets/loading_indicator.dart';
 
 import '../../../../entities/item.dart';
-import '../../../../utils/native/native_api.dart';
 import '../../../../utils/native/native_version.dart';
 import '../../../../widgets/empty.dart';
 
 class ShareItemsList extends StatefulWidget {
   final ShareState state;
-  final PaNativeApi nativeApi;
 
-  const ShareItemsList({super.key, required this.state, this.nativeApi = const ChannelsApi()});
+  const ShareItemsList({super.key, required this.state});
 
   @override
   State<ShareItemsList> createState() => _ShareItemsListState();
@@ -77,7 +75,7 @@ class _ShareItemsListState extends State<ShareItemsList> {
       return true;
     }
     else if (Platform.isAndroid) {
-      final NativeVersion nativeVersion = await widget.nativeApi.getVersion();
+      final NativeVersion nativeVersion = await NativeApiProvider.instance.getVersion();
       if (int.parse(nativeVersion.version) > NativeValues.androidApi12LVersionCode) {
         return false;
       }

@@ -6,6 +6,7 @@ import 'package:passaround/data_structures/file_info.dart';
 import 'package:passaround/features/share/bloc/share_bloc.dart';
 import 'package:passaround/features/share/ui/input/adaptive_screens/small_screen.dart';
 
+import '../../../../utils/native/native_api_provider.dart';
 import 'adaptive_screens/large_screen.dart';
 
 class ShareInputField extends StatefulWidget {
@@ -20,6 +21,18 @@ class ShareInputField extends StatefulWidget {
 
 class _ShareInputFieldState extends State<ShareInputField> {
   final TextEditingController _itemTextController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _configureNativeApi();
+  }
+
+  void _configureNativeApi() {
+    NativeApiProvider.instance.configureShareChannel({
+      "onTextShared": (text) => _sendTextItem(text: text.toString()),
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

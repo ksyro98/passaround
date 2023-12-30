@@ -9,6 +9,8 @@ import 'package:passaround/features/share/bloc/share_bloc.dart';
 import 'package:passaround/features/share/data/share_repository.dart';
 import 'package:passaround/firebase/firebase_utils.dart';
 import 'package:passaround/utils/constants.dart';
+import 'package:passaround/utils/native/channels_api.dart';
+import 'package:passaround/utils/native/native_api_provider.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/profile/bloc/profile_bloc.dart';
 import 'features/profile/data/firebase_authentication_user_manager.dart';
@@ -19,6 +21,7 @@ Future<void> main() async {
   configureApp();
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseUtils.init();
+  NativeApiProvider.configure(const ChannelsApi());
   runApp(const MyApp());
 }
 

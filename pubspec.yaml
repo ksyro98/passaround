@@ -31,7 +31,6 @@ dependencies:
 
 dev_dependencies:
   bloc_test: ^9.1.0
-  pigeon: ^15.0.2
 
   flutter_test:
     sdk: flutter

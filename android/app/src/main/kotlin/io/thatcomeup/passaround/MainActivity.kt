@@ -6,28 +6,23 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.MethodChannel
+import io.thatcomeup.passaround.channels.ShareChannel
+import io.thatcomeup.passaround.channels.VersionChannel
+import io.thatcomeup.passaround.share.ShareUtils
 
 
 class MainActivity: FlutterActivity() {
-    private val VERSION_CHANNEL = "io.thatcomeup.passaround/version"
+    private val versionChannel = VersionChannel()
+    private val shareChannel = ShareChannel()
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        configureAllChannels(flutterEngine)
+    }
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, VERSION_CHANNEL)
-            .setMethodCallHandler { call, result ->
-                if(call.method == "getVersion") {
-                    try {
-                        val version = NativeApiUtils().getVersion()
-                        result.success(version)
-                    } catch (e: Exception) {
-                        result.error("CHANNEL_ERROR", "An error occurred on the Android side of native platform communication through channels.", e)
-                    }
-                } else {
-                    result.notImplemented()
-                }
-            }
+    private fun configureAllChannels(flutterEngine: FlutterEngine) {
+        versionChannel.configureChannel(flutterEngine)
+        shareChannel.configureChannel(flutterEngine)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +31,7 @@ class MainActivity: FlutterActivity() {
         when (intent?.action) {
             Intent.ACTION_SEND -> {
                 if(intent.type == "text/plain") {
-                    handleSentText(intent)
+                    ShareUtils(shareChannel).handleSentText(intent)
                 } else if(intent.type?.startsWith("image/") == true) {
                     print("image")
                 }
@@ -44,9 +39,4 @@ class MainActivity: FlutterActivity() {
         }
     }
 
-    private fun handleSentText(intent: Intent) {
-        intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-            Toast.makeText(context, it, LENGTH_SHORT).show()
-        }
-    }
 }
