@@ -56,6 +56,7 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
   }
 
   Future<void> _onTextSent(ShareTextSent event, Emitter<ShareState> emit) async {
+    await _waitForIdleState();
     final ShareState newState = state.copyWith(value: ShareStateValue.sending);
     emit(newState);
     bool succeeded = await _dataAccess.writeTextItem(event.text);
@@ -63,6 +64,7 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
   }
 
   Future<void> _onImageSent(ShareImageSent event, Emitter<ShareState> emit) async {
+    await _waitForIdleState();
     final ShareState newState = state.copyWith(value: ShareStateValue.sending);
     emit(newState);
     bool succeeded = await _dataAccess.writeImageItem(event.fileInfo);
@@ -70,6 +72,7 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
   }
 
   Future<void> _onFileSent(ShareFileSent event, Emitter<ShareState> emit) async {
+    await _waitForIdleState();
     final ShareState newState = state.copyWith(value: ShareStateValue.sending);
     emit(newState);
     bool succeeded = await _dataAccess.writeFileItem(event.fileInfo);
@@ -77,6 +80,7 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
   }
 
   Future<void> _onDownloadRequested(ShareDownloadRequested event, Emitter<ShareState> emit) async {
+    await _waitForIdleState();
     final ShareState newState = state.copyWith(value: ShareStateValue.downloading);
     emit(newState);
     bool succeeded = await _dataAccess.download(event.item);
@@ -84,6 +88,7 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
   }
 
   Future<void> _onDeleted(ShareDeleted event, Emitter<ShareState> emit) async {
+    await _waitForIdleState();
     final ShareState newState = state.copyWith(value: ShareStateValue.deleting);
     emit(newState);
     bool succeeded = await _dataAccess.deleteItem(event.item);
@@ -114,11 +119,16 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
     emit(newState);
   }
 
+  Future<void> _waitForIdleState() async {
+    while(state.value != ShareStateValue.idle) {
+      await Future.delayed(const Duration(milliseconds: 5000));
+    }
+  }
+
   @override
   Future<void> close() {
     _itemListener?.cancel();
     return super.close();
   }
-
 }
 

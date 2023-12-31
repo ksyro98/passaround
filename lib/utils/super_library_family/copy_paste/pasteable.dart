@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:passaround/utils/file_utils.dart';
 import 'package:passaround/utils/super_library_family/super_file_manager.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 
@@ -35,7 +36,7 @@ mixin Pasteable {
 
   Future<void> _sendPastedFile(SuperFileManager fileManager, Function(FileInfo) onImagePasted) async {
     fileManager.readImage(
-      customFileName: "${DateTime.now().millisecondsSinceEpoch}.png",
+      customFileName: FileUtils.getCurrentTsName(extension: ".png"),
       onSuccess: onImagePasted,
     );
   }

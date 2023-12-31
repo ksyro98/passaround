@@ -1,7 +1,10 @@
 package io.thatcomeup.passaround
 
 import android.content.Intent
+import android.net.Uri
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.os.Parcelable
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import io.flutter.embedding.android.FlutterActivity
@@ -33,10 +36,12 @@ class MainActivity: FlutterActivity() {
                 if(intent.type == "text/plain") {
                     ShareUtils(shareChannel).handleSentText(intent)
                 } else if(intent.type?.startsWith("image/") == true) {
-                    print("image")
+                    Toast.makeText(context, "Image sent!", LENGTH_SHORT).show()
+                    ShareUtils(shareChannel).handleSentImage(intent, contentResolver)
                 }
             }
         }
     }
-
 }
+
+

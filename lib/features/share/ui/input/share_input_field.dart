@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passaround/data_structures/file_info.dart';
 import 'package:passaround/features/share/bloc/share_bloc.dart';
 import 'package:passaround/features/share/ui/input/adaptive_screens/small_screen.dart';
+import 'package:passaround/utils/file_utils.dart';
 
 import '../../../../utils/native/native_api_provider.dart';
 import 'adaptive_screens/large_screen.dart';
@@ -31,6 +32,18 @@ class _ShareInputFieldState extends State<ShareInputField> {
   void _configureNativeApi() {
     NativeApiProvider.instance.configureShareChannel({
       "onTextShared": (text) => _sendTextItem(text: text.toString()),
+      "onImageShared": (image) async {
+        // Logger.lPrint("000", separator: "***");
+        // while(widget.state.value != ShareStateValue.idle) {
+        //   Logger.lPrint("111 ${widget.state.value}", separator: "***");
+        //   await Future.delayed(const Duration(milliseconds: 5000));
+        // }
+        // Logger.lPrint("222", separator: "***");
+        _sendImageItem(FileInfo(
+          name: FileUtils.getCurrentTsName(extension: ".png"),
+          bytes: image as Uint8List,
+        ));
+      },
     });
   }
 

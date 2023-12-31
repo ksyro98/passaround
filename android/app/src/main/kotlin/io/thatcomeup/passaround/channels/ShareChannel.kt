@@ -23,4 +23,10 @@ class ShareChannel : ChannelApi {
             methodChannel?.invokeMethod("onTextShared", text)
         }
     }
+
+    fun sendImage(image: ByteArray) {
+       if(methodChannel != null) {
+           methodChannel?.invokeMethod("onImageShared", image)
+       }
+    }
 }
