@@ -121,7 +121,7 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
 
   Future<void> _waitForIdleState() async {
     while(state.value != ShareStateValue.idle) {
-      await Future.delayed(const Duration(milliseconds: 5000));
+      await Future.delayed(const Duration(milliseconds: 1500));
     }
   }
 
