@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:passaround/utils/logger.dart';
+import 'package:passaround/utils/super_library_family/file_exception.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 
 import '../../data_structures/file_info.dart';
@@ -33,6 +34,10 @@ class SuperFileManager {
     final List<DataFormat<Object>> formats =
         Formats.standardFormats.where((format) => format is FileFormat && _reader.canProvide(format)).toList();
 
+    if (formats.isEmpty) {
+      throw const FileException('File format not supported via drag and drop. '
+          'You can try uploading it using the "Upload Image or File" button.');
+    }
     _readFile(fileFormat: formats[0] as FileFormat, onSuccess: onSuccess, onError: onError);
   }
 
@@ -62,6 +67,7 @@ class SuperFileManager {
         final FileInfo fileInfo = FileInfo(
           name: customFileName ?? (file.fileName ?? ""),
           bytes: bytes,
+          tsLoaded: DateTime.now().millisecondsSinceEpoch,
         );
         onSuccess(fileInfo);
       },

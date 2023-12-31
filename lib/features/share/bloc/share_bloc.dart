@@ -26,7 +26,9 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
     on<ShareTextSent>(_onTextSent);
     on<ShareImageSent>(_onImageSent);
     on<ShareFileSent>(_onFileSent);
+    on<ShareFileInfoSent>(_onFileInfoSent);
     on<ShareDownloadRequested>(_onDownloadRequested);
+    on<ShareProgressUpdated>(_onProgressUpdated);
     on<ShareSucceeded>(_onSucceeded);
     on<ShareFailed>(_onFailed);
     on<ShareReceived>(_onReceived);
@@ -47,7 +49,7 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
   Future<void> _onLoadingStarted(ShareLoadingStarted event, Emitter<ShareState> emit) async {
     final ShareState newState = state.copyWith(value: ShareStateValue.loading);
     emit(newState);
-    
+
     final List<Item>? items = await _dataAccess.getItems();
     final succeeded = items != null;
     succeeded ? add(ShareReceived(items)) : add(const ShareFailed(retrieveError));
@@ -65,18 +67,38 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
 
   Future<void> _onImageSent(ShareImageSent event, Emitter<ShareState> emit) async {
     await _waitForIdleState();
-    final ShareState newState = state.copyWith(value: ShareStateValue.sending);
+    final ShareState newState = state.copyWith(value: ShareStateValue.sendingFile);
     emit(newState);
-    bool succeeded = await _dataAccess.writeImageItem(event.fileInfo);
-    succeeded ? add(const ShareSucceeded()) : add(const ShareFailed(sendingError));
+
+    _dataAccess.writeImageItem(event.fileInfo).listen((progressEither) {
+      progressEither.hasFirst
+          ? add(const ShareFailed(sendingError))
+          : add(ShareProgressUpdated(event.fileInfo, progressEither.second ?? 0));
+    });
   }
 
   Future<void> _onFileSent(ShareFileSent event, Emitter<ShareState> emit) async {
     await _waitForIdleState();
-    final ShareState newState = state.copyWith(value: ShareStateValue.sending);
+    final ShareState newState = state.copyWith(value: ShareStateValue.sendingFile);
     emit(newState);
-    bool succeeded = await _dataAccess.writeFileItem(event.fileInfo);
+
+    _dataAccess.writeFileItem(event.fileInfo).listen((progressEither) {
+      progressEither.hasFirst
+          ? add(const ShareFailed(sendingError))
+          : add(ShareProgressUpdated(event.fileInfo, progressEither.second ?? 0));
+    });
+  }
+
+  FutureOr<void> _onFileInfoSent(ShareFileInfoSent event, Emitter<ShareState> emit) async {
+    _resetProgress(emit);
+
+    bool succeeded = await _dataAccess.writeFileInfo(event.fileInfo);
     succeeded ? add(const ShareSucceeded()) : add(const ShareFailed(sendingError));
+  }
+
+  void _resetProgress(Emitter<ShareState> emit) {
+    final ShareState newState = state.copyWith(value: ShareStateValue.sending, sendingProgress: 0);
+    emit(newState);
   }
 
   Future<void> _onDownloadRequested(ShareDownloadRequested event, Emitter<ShareState> emit) async {
@@ -94,7 +116,16 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
     bool succeeded = await _dataAccess.deleteItem(event.item);
     succeeded ? add(const ShareSucceeded()) : add(const ShareFailed(deletingError));
   }
-  
+
+  FutureOr<void> _onProgressUpdated(ShareProgressUpdated event, Emitter<ShareState> emit) async {
+    final ShareState newState = state.copyWith(sendingProgress: event.progress);
+    emit(newState);
+
+    if (event.progress == 1) {
+      add(ShareFileInfoSent(event.fileInfo));
+    }
+  }
+
   void _onSucceeded(ShareSucceeded event, Emitter<ShareState> emit) {
     final ShareState newState = state.copyWith(value: ShareStateValue.idle, errorMessage: "");
     emit(newState);
@@ -120,8 +151,8 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
   }
 
   Future<void> _waitForIdleState() async {
-    while(state.value != ShareStateValue.idle) {
-      await Future.delayed(const Duration(milliseconds: 1500));
+    while (state.value != ShareStateValue.idle) {
+      await Future.delayed(const Duration(milliseconds: 500));
     }
   }
 
@@ -131,4 +162,3 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
     return super.close();
   }
 }
-

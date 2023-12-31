@@ -1,3 +1,4 @@
+import 'package:passaround/data_structures/either.dart';
 import 'package:passaround/data_structures/file_info.dart';
 import 'package:passaround/entities/image_item.dart';
 import 'package:passaround/entities/item.dart';
@@ -48,27 +49,38 @@ class ShareRepository implements ShareDataAccess {
   }
 
   @override
-  Future<bool> writeImageItem(FileInfo fileInfo) async {
+  Stream<Either<String, double>> writeImageItem(FileInfo fileInfo) {
     final Map<String, dynamic> data = {
       "name": fileInfo.name,
       "path": fileInfo.path,
       "bytes": fileInfo.bytes,
-      "ts": DateTime.now().millisecondsSinceEpoch,
+      "ts": fileInfo.tsLoaded,
     };
-    return await _remoteDataProvider.writeImageItem(data);
+    return _remoteDataProvider.storeImage(data);
   }
 
   @override
-  Future<bool> writeFileItem(FileInfo fileInfo) async {
+  Stream<Either<String, double>> writeFileItem(FileInfo fileInfo) {
     final Map<String, dynamic> data = {
       "name": fileInfo.name,
       "path": fileInfo.path,
       "bytes": fileInfo.bytes,
-      "ts": DateTime.now().millisecondsSinceEpoch,
+      "ts": fileInfo.tsLoaded,
     };
-    return await _remoteDataProvider.writeFileItem(data);
+    return _remoteDataProvider.storeFile(data);
   }
 
+  @override
+  Future<bool> writeFileInfo(FileInfo fileInfo) async {
+    final Map<String, dynamic> data = {
+      "name": fileInfo.name,
+      "path": fileInfo.path,
+      "bytes": fileInfo.bytes,
+      "ts": fileInfo.tsLoaded,
+    };
+    return await _remoteDataProvider.writeImageOrFileItem(data, isImage: fileInfo.isImage);
+  }
+  
   @override
   Future<bool> deleteItem(Item item) async {
     String? path;

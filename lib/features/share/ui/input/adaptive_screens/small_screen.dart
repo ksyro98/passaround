@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class SmallScreenShareInputField extends StatefulWidget {
   final TextEditingController itemTextController;
   final bool sending;
+  final double sendingProgress;
   final void Function() sendTextItem;
   final Future<void> Function() sendFile;
 
@@ -10,6 +11,7 @@ class SmallScreenShareInputField extends StatefulWidget {
     super.key,
     required this.itemTextController,
     required this.sending,
+    required this.sendingProgress,
     required this.sendTextItem,
     required this.sendFile,
   });
@@ -44,10 +46,10 @@ class _SmallScreenShareInputFieldState extends State<SmallScreenShareInputField>
           IconButton(
             onPressed: (_fileSelectionLoading || widget.sending) ? null : _onFileSelectionPressed,
             icon: (_fileSelectionLoading || widget.sending)
-                ? const SizedBox(
+                ? SizedBox(
                     height: 24,
                     width: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(strokeWidth: 2, value: widget.sendingProgress),
                   )
                 : const Icon(Icons.add, size: 30),
           ),

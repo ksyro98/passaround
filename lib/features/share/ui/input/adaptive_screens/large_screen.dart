@@ -12,15 +12,17 @@ import '../../../../../utils/super_library_family/drag_drop/input_drop_region.da
 class LargeScreenShareInputField extends StatefulWidget {
   final TextEditingController itemTextController;
   final bool sending;
+  final double sendingProgress;
   final void Function({String? text}) sendTextItem;
   final Future<void> Function() selectAndSendFile;
   final void Function(FileInfo) sendAddedFile;
-  final void Function() onError;
+  final void Function(Object?) onError;
 
   const LargeScreenShareInputField({
     super.key,
     required this.itemTextController,
     required this.sending,
+    required this.sendingProgress,
     required this.sendTextItem,
     required this.selectAndSendFile,
     required this.sendAddedFile,
@@ -77,10 +79,10 @@ class _LargeScreenShareInputFieldState extends State<LargeScreenShareInputField>
                     const Text("or...", style: TextStyle(fontSize: 16)),
                     const SizedBox(height: 8),
                     widget.sending
-                        ? const SizedBox(
+                        ? SizedBox(
                             height: 20,
                             width: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2.5),
+                            child: CircularProgressIndicator(strokeWidth: 2.5, value: widget.sendingProgress),
                           )
                         : FilledButton(
                             onPressed: _isDisabled ? null : _onFileSelectionPressed,

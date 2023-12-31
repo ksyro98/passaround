@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:passaround/data_structures/extended_bool.dart';
+import 'package:passaround/data_structures/either.dart';
 import 'package:passaround/firebase/firebase_download/mobile_firebase_downloader_factory.dart'
     if (dart.library.html) 'package:passaround/firebase/firebase_download/web_firebase_downloader_factory.dart';
 import 'package:passaround/firebase/firebase_id_manager.dart';
@@ -14,24 +14,25 @@ import '../../../../utils/logger.dart';
 class ShareStorage {
   final _storageRef = FirebaseStorage.instance.ref();
 
-  Future<ExtendedBool> storeFile(Map<String, dynamic> data, {required bool isImage}) async {
-    final String firebasePath = _getStoragePath(
-      directories: [
-        FirebaseIdManager.get().id,
-        isImage ? "images" : "files",
-      ],
-      fileName: isImage ? data["ts"].toString() : FileUtils.getNameWithoutExtension(data["name"]),
-      fileExtension: FileUtils.getExtension(data["name"]),
-    );
+  String getFirebasePath({required double ts, required String name, required bool isImage}) => _getStoragePath(
+        directories: [
+          FirebaseIdManager.get().id,
+          isImage ? "images" : "files",
+        ],
+        fileName: isImage ? ts.toString() : FileUtils.getNameWithoutExtension(name),
+        fileExtension: FileUtils.getExtension(name),
+      );
 
-    bool succeeded = false;
+  Stream<Either<String, double>> store(Map<String, dynamic> data, {required bool isImage}) {
+    final String firebasePath = getFirebasePath(ts: data["ts"], name: data["name"], isImage: isImage);
+
     if (data["path"] != null) {
-      succeeded = await _storeFile(path: data["path"], firebasePath: firebasePath);
+      return _storeFile(path: data["path"], firebasePath: firebasePath);
     } else if (data["bytes"] != null) {
-      succeeded = await _storeData(bytes: data["bytes"], firebasePath: firebasePath);
+      return _storeData(bytes: data["bytes"], firebasePath: firebasePath);
+    } else {
+      return Stream.fromIterable([const Either.firstOnly("error")]);
     }
-
-    return ExtendedBool(succeeded, detail: firebasePath);
   }
 
   String _getStoragePath({
@@ -43,28 +44,39 @@ class ShareStorage {
     return "$directoryPath/$fileName.$fileExtension";
   }
 
-  Future<bool> _storeFile({required String path, required String firebasePath}) async {
-    return await _store(
+  Stream<Either<String, double>> _storeFile({required String path, required String firebasePath}) {
+    return _store(
       action: (ref) => ref.putFile(File(path)),
       firebasePath: firebasePath,
     );
   }
 
-  Future<bool> _storeData({required Uint8List bytes, required String firebasePath}) async {
-    return await _store(
+  Stream<Either<String, double>> _storeData({required Uint8List bytes, required String firebasePath}) {
+    return _store(
       action: (ref) => ref.putData(bytes),
       firebasePath: firebasePath,
     );
   }
 
-  Future<bool> _store({required Future<void> Function(Reference) action, required String firebasePath}) async {
+  Stream<Either<String, double>> _store(
+      {required UploadTask Function(Reference) action, required String firebasePath}) {
     try {
       final userDir = _storageRef.child(firebasePath);
-      await action(userDir);
-      return true;
+      final UploadTask task = action(userDir);
+
+      // task.snapshotEvents.listen((taskSnapshot) {
+      //   Logger.lPrint([taskSnapshot.bytesTransferred, taskSnapshot.totalBytes]);
+      // });
+
+      return task.snapshotEvents.map(
+        (taskSnapshot) {
+          final double progress = (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes).clamp(0, 0.99);
+          return taskSnapshot.state == TaskState.success ? const Either.secondOnly(1) : Either.secondOnly(progress);
+        },
+      );
     } catch (e) {
       Logger.ePrint(e);
-      return false;
+      return Stream.fromIterable([Either.firstOnly(e.toString())]);
     }
   }
 

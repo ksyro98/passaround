@@ -1,4 +1,5 @@
 
+import 'package:passaround/data_structures/either.dart';
 import 'package:passaround/data_structures/file_info.dart';
 import 'package:passaround/entities/item.dart';
 
@@ -9,9 +10,11 @@ abstract class ShareDataAccess {
 
   Future<bool> writeTextItem(String text);
 
-  Future<bool> writeImageItem(FileInfo fileInfo);
+  Stream<Either<String, double>> writeImageItem(FileInfo fileInfo);
 
-  Future<bool> writeFileItem(FileInfo fileInfo);
+  Stream<Either<String, double>> writeFileItem(FileInfo fileInfo);
+
+  Future<bool> writeFileInfo(FileInfo fileInfo);
 
   Future<bool> deleteItem(Item item);
 

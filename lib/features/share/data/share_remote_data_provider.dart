@@ -1,3 +1,5 @@
+import '../../../data_structures/either.dart';
+
 abstract class ShareRemoteDataProvider {
   Future<List<Map<String, dynamic>>?> getItems();
 
@@ -5,9 +7,11 @@ abstract class ShareRemoteDataProvider {
 
   Future<bool> writeTextItem(Map<String, dynamic> data);
 
-  Future<bool> writeImageItem(Map<String, dynamic> data);
+  Future<bool> writeImageOrFileItem(Map<String, dynamic> data, {required bool isImage});
 
-  Future<bool> writeFileItem(Map<String, dynamic> data);
+  Stream<Either<String, double>> storeImage(Map<String, dynamic> data);
+
+  Stream<Either<String, double>> storeFile(Map<String, dynamic> data);
 
   Future<bool> deleteItem(String id, {String? path});
 

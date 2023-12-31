@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:passaround/data_structures/file_info.dart';
+import 'package:passaround/utils/logger.dart';
 import 'package:passaround/utils/super_library_family/super_file_manager.dart';
+// ignore: implementation_imports
 import 'package:super_clipboard/src/reader.dart';
 import 'package:super_drag_and_drop/super_drag_and_drop.dart';
 
@@ -10,7 +12,7 @@ class InputDropRegion extends StatefulWidget {
   final Widget child;
   final void Function(String) onTextDropped;
   final void Function(FileInfo) onImageOrFileDropped;
-  final void Function() onError;
+  final void Function(Object?) onError;
 
   const InputDropRegion({
     super.key,
@@ -57,10 +59,15 @@ class _InputDropRegionState extends State<InputDropRegion> {
   }
 
   void _manageDroppedText(SuperFileManager fileManager) {
-    fileManager.readText((value) => widget.onTextDropped(value), onError: (_) => widget.onError());
+    fileManager.readText((value) => widget.onTextDropped(value), onError: (e) => widget.onError(e));
   }
 
   void _manageDroppedFile(SuperFileManager fileManager) {
-    fileManager.readGenericFile((fileInfo) =>  widget.onImageOrFileDropped(fileInfo));
+    try {
+      fileManager.readGenericFile((fileInfo) =>  widget.onImageOrFileDropped(fileInfo));
+    } catch (e) {
+      Logger.ePrint(e);
+      widget.onError(e);
+    }
   }
 }

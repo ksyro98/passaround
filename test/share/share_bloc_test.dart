@@ -38,8 +38,16 @@ void main() {
       "image item is sent",
       build: () => ShareBloc(dataAccess),
       seed: () => const ShareState(ShareStateValue.idle, [], ""),
-      act: (bloc) => bloc.add(ShareImageSent(FileInfo(name: DummyItems.dummyImageItem1.name))),
+      act: (bloc) => bloc.add(ShareImageSent(FileInfo(
+        name: DummyItems.dummyImageItem1.name,
+        tsLoaded: DateTime.now().millisecondsSinceEpoch,
+      ))),
       expect: () => [
+        const ShareState(ShareStateValue.sendingFile, [], "", sendingProgress: 0),
+        const ShareState(ShareStateValue.sendingFile, [], "", sendingProgress: 0.25),
+        const ShareState(ShareStateValue.sendingFile, [], "", sendingProgress: 0.5),
+        const ShareState(ShareStateValue.sendingFile, [], "", sendingProgress: 0.75),
+        const ShareState(ShareStateValue.sendingFile, [], "", sendingProgress: 1),
         const ShareState(ShareStateValue.sending, [], ""),
         const ShareState(ShareStateValue.idle, [], ""),
       ],
@@ -49,23 +57,29 @@ void main() {
       "file item is sent",
       build: () => ShareBloc(dataAccess),
       seed: () => const ShareState(ShareStateValue.idle, [], ""),
-      act: (bloc) => bloc.add(ShareFileSent(FileInfo(name: DummyItems.dummyFileItem1.name))),
+      act: (bloc) => bloc.add(ShareFileSent(FileInfo(
+        name: DummyItems.dummyFileItem1.name,
+        tsLoaded: DateTime.now().millisecondsSinceEpoch,
+      ))),
       expect: () => [
+        const ShareState(ShareStateValue.sendingFile, [], "", sendingProgress: 0),
+        const ShareState(ShareStateValue.sendingFile, [], "", sendingProgress: 0.25),
+        const ShareState(ShareStateValue.sendingFile, [], "", sendingProgress: 0.5),
+        const ShareState(ShareStateValue.sendingFile, [], "", sendingProgress: 0.75),
+        const ShareState(ShareStateValue.sendingFile, [], "", sendingProgress: 1),
         const ShareState(ShareStateValue.sending, [], ""),
         const ShareState(ShareStateValue.idle, [], ""),
       ],
     );
 
-    blocTest(
-      "item is downloaded",
-      build: () => ShareBloc(dataAccess),
-      seed: () => const ShareState(ShareStateValue.idle, [], ""),
-      act: (bloc) => bloc.add(ShareDownloadRequested(DummyItems.dummyImageItem1)),
-      expect: () => [
-        const ShareState(ShareStateValue.downloading, [], ""),
-        const ShareState(ShareStateValue.idle, [], ""),
-      ]
-    );
+    blocTest("item is downloaded",
+        build: () => ShareBloc(dataAccess),
+        seed: () => const ShareState(ShareStateValue.idle, [], ""),
+        act: (bloc) => bloc.add(ShareDownloadRequested(DummyItems.dummyImageItem1)),
+        expect: () => [
+              const ShareState(ShareStateValue.downloading, [], ""),
+              const ShareState(ShareStateValue.idle, [], ""),
+            ]);
 
     blocTest(
       "item is deleted",
@@ -124,9 +138,12 @@ void main() {
       "image item isn't sent",
       build: () => ShareBloc(dataAccess),
       seed: () => const ShareState(ShareStateValue.idle, [], ""),
-      act: (bloc) => bloc.add(ShareImageSent(FileInfo(name: DummyItems.dummyImageItem1.name))),
+      act: (bloc) => bloc.add(ShareImageSent(FileInfo(
+        name: DummyItems.dummyImageItem1.name,
+        tsLoaded: DateTime.now().millisecondsSinceEpoch,
+      ))),
       expect: () => [
-        const ShareState(ShareStateValue.sending, [], ""),
+        const ShareState(ShareStateValue.sendingFile, [], ""),
         const ShareState(ShareStateValue.error, [], ShareBloc.sendingError),
       ],
     );
@@ -135,23 +152,24 @@ void main() {
       "file item isn't sent",
       build: () => ShareBloc(dataAccess),
       seed: () => const ShareState(ShareStateValue.idle, [], ""),
-      act: (bloc) => bloc.add(ShareFileSent(FileInfo(name: DummyItems.dummyFileItem1.name))),
+      act: (bloc) => bloc.add(ShareFileSent(FileInfo(
+        name: DummyItems.dummyFileItem1.name,
+        tsLoaded: DateTime.now().millisecondsSinceEpoch,
+      ))),
       expect: () => [
-        const ShareState(ShareStateValue.sending, [], ""),
+        const ShareState(ShareStateValue.sendingFile, [], ""),
         const ShareState(ShareStateValue.error, [], ShareBloc.sendingError),
       ],
     );
 
-    blocTest(
-        "item isn't downloaded",
+    blocTest("item isn't downloaded",
         build: () => ShareBloc(dataAccess),
         seed: () => const ShareState(ShareStateValue.idle, [], ""),
         act: (bloc) => bloc.add(ShareDownloadRequested(DummyItems.dummyImageItem1)),
         expect: () => [
-          const ShareState(ShareStateValue.downloading, [], ""),
-          const ShareState(ShareStateValue.error, [], ShareBloc.downloadingError),
-        ]
-    );
+              const ShareState(ShareStateValue.downloading, [], ""),
+              const ShareState(ShareStateValue.error, [], ShareBloc.downloadingError),
+            ]);
 
     blocTest(
       "item isn't deleted",

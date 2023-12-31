@@ -17,4 +17,7 @@ class Either<T,Y> {
   T? getValueOnFailure() => first;
   T? getValueOnError() => first;
   Y? getValueOnSuccess() => second;
+
+  @override
+  String toString() => "Either(first: $first, second: $second)";
 }

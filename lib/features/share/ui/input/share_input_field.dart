@@ -6,6 +6,7 @@ import 'package:passaround/data_structures/file_info.dart';
 import 'package:passaround/features/share/bloc/share_bloc.dart';
 import 'package:passaround/features/share/ui/input/adaptive_screens/small_screen.dart';
 import 'package:passaround/utils/file_utils.dart';
+import 'package:passaround/utils/super_library_family/file_exception.dart';
 
 import '../../../../utils/native/native_api_provider.dart';
 import 'adaptive_screens/large_screen.dart';
@@ -33,15 +34,10 @@ class _ShareInputFieldState extends State<ShareInputField> {
     NativeApiProvider.instance.configureShareChannel({
       "onTextShared": (text) => _sendTextItem(text: text.toString()),
       "onImageShared": (image) async {
-        // Logger.lPrint("000", separator: "***");
-        // while(widget.state.value != ShareStateValue.idle) {
-        //   Logger.lPrint("111 ${widget.state.value}", separator: "***");
-        //   await Future.delayed(const Duration(milliseconds: 5000));
-        // }
-        // Logger.lPrint("222", separator: "***");
         _sendImageItem(FileInfo(
           name: FileUtils.getCurrentTsName(extension: ".png"),
           bytes: image as Uint8List,
+          tsLoaded: DateTime.now().millisecondsSinceEpoch,
         ));
       },
     });
@@ -52,13 +48,15 @@ class _ShareInputFieldState extends State<ShareInputField> {
     return widget.isSmallScreen
         ? SmallScreenShareInputField(
             itemTextController: _itemTextController,
-            sending: widget.state.value == ShareStateValue.sending,
+            sending: widget.state.isSending,
+            sendingProgress: widget.state.sendingProgress,
             sendTextItem: _sendTextItem,
             sendFile: _selectAndSendFile,
           )
         : LargeScreenShareInputField(
             itemTextController: _itemTextController,
-            sending: widget.state.value == ShareStateValue.sending,
+            sending: widget.state.isSending,
+            sendingProgress: widget.state.sendingProgress,
             sendTextItem: _sendTextItem,
             selectAndSendFile: _selectAndSendFile,
             sendAddedFile: _sendAddedFile,
@@ -82,6 +80,7 @@ class _ShareInputFieldState extends State<ShareInputField> {
         name: result.files.single.name,
         path: kIsWeb ? null : result.files.single.path,
         bytes: result.files.single.bytes,
+        tsLoaded: DateTime.now().millisecondsSinceEpoch,
       );
 
       if (fileInfo.path != null || fileInfo.bytes != null) {
@@ -102,5 +101,16 @@ class _ShareInputFieldState extends State<ShareInputField> {
 
   void _sendFileItem(FileInfo fileInfo) => context.read<ShareBloc>().add(ShareFileSent(fileInfo));
 
-  void _onError() => context.read<ShareBloc>().add(const ShareFailed(ShareBloc.unknownError));
+  void _onError(Object? e) {
+    String errorMessage;
+    if (e is FileException) {
+      errorMessage = e.message;
+    } else if (e is Exception) {
+      errorMessage =
+          e.toString().startsWith("Exception: ") ? e.toString().substring("Exception: ".length) : e.toString();
+    } else {
+      errorMessage = ShareBloc.unknownError;
+    }
+    context.read<ShareBloc>().add(ShareFailed(errorMessage));
+  }
 }

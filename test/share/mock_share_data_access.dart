@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:passaround/data_structures/either.dart';
 import 'package:passaround/data_structures/file_info.dart';
 import 'package:passaround/entities/item.dart';
 import 'package:passaround/features/share/bloc/share_data_access.dart';
@@ -32,12 +33,33 @@ class MockShareDataAccess implements ShareDataAccess {
   }
 
   @override
-  Future<bool> writeImageItem(FileInfo fileInfo) async {
-    return shouldSucceed;
+  Stream<Either<String, double>> writeImageItem(FileInfo fileInfo) {
+    return shouldSucceed
+        ? Stream.fromIterable([
+      const Either.secondOnly(0),
+      const Either.secondOnly(0.25),
+      const Either.secondOnly(0.5),
+      const Either.secondOnly(0.75),
+      const Either.secondOnly(1),
+    ])
+        : Stream.fromIterable([const Either.firstOnly("error")]);
   }
 
   @override
-  Future<bool> writeFileItem(FileInfo fileInfo) async {
+  Stream<Either<String, double>> writeFileItem(FileInfo fileInfo) {
+    return shouldSucceed
+        ? Stream.fromIterable([
+            const Either.secondOnly(0),
+            const Either.secondOnly(0.25),
+            const Either.secondOnly(0.5),
+            const Either.secondOnly(0.75),
+            const Either.secondOnly(1),
+          ])
+        : Stream.fromIterable([const Either.firstOnly("error")]);
+  }
+
+  @override
+  Future<bool> writeFileInfo(FileInfo fileInfo) async {
     return shouldSucceed;
   }
 
@@ -51,8 +73,7 @@ class MockShareDataAccess implements ShareDataAccess {
     return shouldSucceed;
   }
 
-  void close(){
+  void close() {
     _streamController.close();
   }
 }
-

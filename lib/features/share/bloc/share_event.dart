@@ -27,6 +27,19 @@ class ShareFileSent extends ShareEvent {
   const ShareFileSent(this.fileInfo);
 }
 
+class ShareFileInfoSent extends ShareEvent {
+  final FileInfo fileInfo;
+  
+  const ShareFileInfoSent(this.fileInfo);
+}
+
+class ShareProgressUpdated extends ShareEvent {
+  final FileInfo fileInfo;
+  final double progress;
+  
+  const ShareProgressUpdated(this.fileInfo, this.progress);
+}
+
 class ShareDeleted extends ShareEvent {
   final Item item;
   
