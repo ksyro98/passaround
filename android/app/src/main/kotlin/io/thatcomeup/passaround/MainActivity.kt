@@ -36,7 +36,6 @@ class MainActivity: FlutterActivity() {
                 if(intent.type == "text/plain") {
                     ShareUtils(shareChannel).handleSentText(intent)
                 } else if(intent.type?.startsWith("image/") == true) {
-                    Toast.makeText(context, "Image sent!", LENGTH_SHORT).show()
                     ShareUtils(shareChannel).handleSentImage(intent, contentResolver)
                 }
             }
