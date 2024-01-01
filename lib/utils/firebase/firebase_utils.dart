@@ -3,7 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:passaround/entities/pa_user.dart';
 import 'package:passaround/entities/pa_user_manager.dart';
 
-import '../firebase_options.dart';
+import '../../firebase_options.dart';
+
 
 class FirebaseUtils {
   static const String userItemsCollectionName = 'userItems';

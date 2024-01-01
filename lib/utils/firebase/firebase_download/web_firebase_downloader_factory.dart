@@ -1,4 +1,4 @@
-import 'package:passaround/firebase/firebase_download/web_firebase_downloader.dart';
+import 'package:passaround/utils/firebase/firebase_download/web_firebase_downloader.dart';
 import 'firebase_downloader.dart';
 import 'firebase_downloader_factory.dart';
 
