@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:passaround/firebase/firebase_utils.dart';
+import 'package:passaround/utils/firebase/firebase_utils.dart';
 
 class AuthFirestore {
   final String userId;

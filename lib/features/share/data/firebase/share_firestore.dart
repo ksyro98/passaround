@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:passaround/firebase/firebase_id_manager.dart';
+import 'package:passaround/utils/firebase/firebase_id_manager.dart';
 
-import '../../../../firebase/firebase_utils.dart';
+import '../../../../utils/firebase/firebase_utils.dart';
 import '../../../../utils/logger.dart';
 
 class ShareFirestore {

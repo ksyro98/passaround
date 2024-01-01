@@ -1,5 +1,5 @@
 import 'package:passaround/entities/pa_user_manager.dart';
-import 'package:passaround/firebase/firebase_utils.dart';
+import 'package:passaround/utils/firebase/firebase_utils.dart';
 
 class FirebaseIdManager {
   static FirebaseIdManager? _instance;
