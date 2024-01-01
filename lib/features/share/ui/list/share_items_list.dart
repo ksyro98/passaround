@@ -45,11 +45,24 @@ class _ShareItemsListState extends State<ShareItemsList> {
       itemBuilder: (context, index) {
         final Item item = items[index];
         if (item is TextItem) {
-          return TextItemCard(item: item, onDeletePressed: _deleteItem, showSnackBarMessage: _showCopyMessage);
+          return TextItemCard(
+            item: item,
+            onDeletePressed: _deleteItem,
+            showSnackBarMessage: _showCopyMessage,
+          );
         } else if (item is ImageItem) {
-          return ImageItemCard(item: item, onDownloadPressed: _download, onDeletePressed: _deleteItem);
+          return ImageItemCard(
+            item: item,
+            onDownloadPressed: _download,
+            onDeletePressed: _deleteItem,
+          );
         } else if (item is FileItem) {
-          return FileItemCard(item: item, onItemPressed: _download, onDeletePressed: _deleteItem);
+          return FileItemCard(
+            item: item,
+            onItemPressed: _download,
+            onDownloadPressed: _download,
+            onDeletePressed: _deleteItem,
+          );
         } else {
           return const Empty();
         }
@@ -61,7 +74,8 @@ class _ShareItemsListState extends State<ShareItemsList> {
 
   void _showCopyMessage(String message) async {
     if (await _shouldDisplayToast()) {
-      if(!mounted) return;  // Do not use BuildContexts across async gaps: https://dart.dev/tools/linter-rules/use_build_context_synchronously
+      if (!mounted) return; // Do not use BuildContexts across async gaps: https://dart.dev/tools/linter-rules/use_build_context_synchronously
+
       SimpleSnackBar.show(
         context,
         message,
@@ -71,10 +85,9 @@ class _ShareItemsListState extends State<ShareItemsList> {
   }
 
   Future<bool> _shouldDisplayToast() async {
-    if(kIsWeb) {
+    if (kIsWeb) {
       return true;
-    }
-    else if (Platform.isAndroid) {
+    } else if (Platform.isAndroid) {
       final NativeVersion nativeVersion = await NativeApiProvider.instance.getVersion();
       if (int.parse(nativeVersion.version) > NativeValues.androidApi12LVersionCode) {
         return false;

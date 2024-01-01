@@ -8,12 +8,14 @@ import '../../../../../entities/item.dart';
 class FileItemCard extends StatelessWidget {
   final FileItem item;
   final void Function(Item item) onItemPressed;
-  final void Function(Item) onDeletePressed;
+  final void Function(Item item) onDownloadPressed;
+  final void Function(Item item) onDeletePressed;
 
   const FileItemCard({
     super.key,
     required this.item,
     required this.onItemPressed,
+    required this.onDownloadPressed,
     required this.onDeletePressed,
   });
 
@@ -56,6 +58,10 @@ class FileItemCard extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          IconButton(
+            onPressed: () => onDownloadPressed(item),
+            icon: const Icon(Icons.download, size: 25),
           ),
           IconButton(
             onPressed: () => onDeletePressed(item),
