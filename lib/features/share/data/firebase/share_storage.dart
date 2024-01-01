@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:passaround/data_structures/either.dart';
 import 'package:passaround/utils/firebase/firebase_download/mobile_firebase_downloader_factory.dart'
-    if (dart.library.html) 'package:passaround/firebase/firebase_download/web_firebase_downloader_factory.dart';
+    if (dart.library.html) 'package:passaround/utils/firebase/firebase_download/web_firebase_downloader_factory.dart';
 import 'package:passaround/utils/firebase/firebase_id_manager.dart';
 
 import '../../../../utils/firebase/firebase_download/firebase_downloader_factory.dart';
