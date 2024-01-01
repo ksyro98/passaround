@@ -14,7 +14,7 @@ import '../../../../utils/logger.dart';
 class ShareStorage {
   final _storageRef = FirebaseStorage.instance.ref();
 
-  String getFirebasePath({required double ts, required String name, required bool isImage}) => _getStoragePath(
+  String getFirebasePath({required int ts, required String name, required bool isImage}) => _getStoragePath(
         directories: [
           FirebaseIdManager.get().id,
           isImage ? "images" : "files",
@@ -63,10 +63,6 @@ class ShareStorage {
     try {
       final userDir = _storageRef.child(firebasePath);
       final UploadTask task = action(userDir);
-
-      // task.snapshotEvents.listen((taskSnapshot) {
-      //   Logger.lPrint([taskSnapshot.bytesTransferred, taskSnapshot.totalBytes]);
-      // });
 
       return task.snapshotEvents.map(
         (taskSnapshot) {
