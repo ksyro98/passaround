@@ -5,7 +5,6 @@ import 'package:passaround/entities/pa_user.dart';
 import 'package:passaround/features/auth/ui/common/auth_fields.dart';
 import 'package:passaround/widgets/circled_letter.dart';
 import 'package:passaround/navigation/auth/log_in_go_route.dart';
-import 'package:passaround/navigation/share_go_route.dart';
 import 'package:passaround/widgets/loading_indicator.dart';
 
 import '../../../navigation/utils/functions.dart';
@@ -45,10 +44,7 @@ class _ProfileScreeState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: _navigateBack,
-          icon: const Icon(Icons.arrow_back),
-        ),
+        leading: const BackButton(),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -99,14 +95,6 @@ class _ProfileScreeState extends State<ProfileScreen> {
   }
 
   void _navigateToLogInScreen() => GoRouter.of(context).goNamed(LogInGoRoute.name);
-
-  void _navigateBack() {
-    if(GoRouter.of(context).canPop()) {
-      GoRouter.of(context).pop();
-    } else  {
-      GoRouter.of(context).goNamed(ShareGoRoute.name);
-    }
-  }
 
   void _logOut() => context.read<ProfileBloc>().add(const ProfileLogOutRequested());
 }

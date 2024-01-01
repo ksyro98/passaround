@@ -4,11 +4,12 @@ import 'package:passaround/entities/pa_user_manager.dart';
 import 'package:passaround/features/share/bloc/share_bloc.dart';
 import 'package:passaround/features/share/ui/input/share_input_field.dart';
 import 'package:passaround/features/share/ui/list/share_items_list.dart';
+import 'package:passaround/features/share/ui/top_app_bar/about/about_action.dart';
 import 'package:passaround/features/share/ui/top_app_bar/profile/profile_action.dart';
 import 'package:passaround/navigation/utils/functions.dart';
 
 import '../../../entities/pa_user.dart';
-import '../../../utils/constants.dart';
+import '../../../utils/form_factors_utils.dart';
 import '../../../widgets/simple_snack_bar.dart';
 
 class ShareScreen extends StatefulWidget {
@@ -32,11 +33,12 @@ class _ShareScreenState extends State<ShareScreen> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        bool isMobile = constraints.maxWidth <= FormFactorValues.smallScreenThreshold;
+        final bool isMobile = FormFactorsUtils.isSmallScreen(constraints.maxWidth);
         return Scaffold(
           appBar: AppBar(
             title: const Text("PassAround", style: TextStyle(fontSize: 26)),
             actions: [
+              AboutAction(isMobile: isMobile),
               ProfileAction(userId: user.id, username: user.username, isMobile: isMobile),
             ],
           ),

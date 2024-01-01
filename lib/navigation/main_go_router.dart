@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:passaround/navigation/about_go_route.dart';
 import 'package:passaround/navigation/auth/log_in_go_route.dart';
 import 'package:passaround/navigation/image_go_route.dart';
 import 'package:passaround/navigation/share_go_route.dart';
@@ -21,6 +22,7 @@ class MainGoRouter {
       RecoveryEmailSentGoRoute().get(),
       ProfileGoRoute().get(),
       ImageGoRoute().get(),
+      AboutGoRoute().get(),
     ],
   );
 }

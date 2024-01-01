@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class FormFactorValues {
-  static const int smallScreenThreshold = 520;
+  static const int smallScreenThreshold = 620;
+  static const int mediumScreenThreshold = 800;
 }
 
 class ColorValues {
@@ -11,6 +12,8 @@ class ColorValues {
 class AssetValues {
   static const String lightThemeCircularLogo = 'assets/logo_circular_light_theme.png';
   static const String darkThemeCircularLogo = 'assets/logo_circular_dark_theme.png';
+  static const String darkThemeLogoHalfBlackLarge = 'assets/logo_large_half_black.svg';
+  static const String googlePlayBadge = 'assets/google_play_badge.png';
 }
 
 class TypeValues {

@@ -6,7 +6,7 @@ import 'package:passaround/features/share/ui/top_app_bar/profile/profile_name_an
 import 'package:passaround/navigation/auth/log_in_go_route.dart';
 import 'package:passaround/navigation/profile_go_route.dart';
 
-class ProfileAction extends StatefulWidget {
+class ProfileAction extends StatelessWidget {
   final String username;
   final String userId;
   final bool isMobile;
@@ -14,27 +14,22 @@ class ProfileAction extends StatefulWidget {
   const ProfileAction({super.key, required this.userId, required this.username, required this.isMobile});
 
   @override
-  State<ProfileAction> createState() => _ProfileActionState();
-}
-
-class _ProfileActionState extends State<ProfileAction> {
-  @override
   Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: _navigateToUserDetails,
+        onTap: () => _navigateToUserDetails(context),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: widget.isMobile ? const ProfileIcon() : ProfileNameAndIcon(username: widget.username),
+          child: isMobile ? const ProfileIcon() : ProfileNameAndIcon(username: username),
         ),
       ),
     );
   }
 
-  void _navigateToUserDetails() {
+  void _navigateToUserDetails(BuildContext context) {
     if (PaUserManager.get().isLoggedIn()) {
-      GoRouter.of(context).pushNamed(ProfileGoRoute.name, pathParameters: {"id": widget.userId});
+      GoRouter.of(context).pushNamed(ProfileGoRoute.name, pathParameters: {"id": userId});
     } else {
       GoRouter.of(context).goNamed(LogInGoRoute.name);
     }
