@@ -129,7 +129,7 @@ class _AboutScreenState extends State<AboutScreen> {
           fit: BoxFit.fitWidth,
           clipBehavior: Clip.none,
           alignment: Alignment.centerRight,
-          colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onBackground, BlendMode.srcIn),
+          colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
         ),
       ),
     );
