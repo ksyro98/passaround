@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:passaround/utils/constants.dart';
 import 'package:passaround/utils/form_factors_utils.dart';
+import 'package:passaround/widgets/back_arrow.dart';
 import 'package:passaround/widgets/simple_snack_bar.dart';
 
 class AboutScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class _AboutScreenState extends State<AboutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(),
+        leading: const BackArrow(),
         backgroundColor: Colors.transparent,
       ),
       body: LayoutBuilder(
@@ -90,6 +91,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 const SizedBox(height: 12),
                 Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     MouseRegion(
                       cursor: SystemMouseCursors.click,
@@ -123,7 +125,7 @@ class _AboutScreenState extends State<AboutScreen> {
       child: Padding(
         padding: const EdgeInsets.only(top: 100, left: 10),
         child: SvgPicture.asset(
-          AssetValues.darkThemeLogoHalfBlackLarge,
+          AssetValues.logoHalfBlackLarge,
           fit: BoxFit.fitWidth,
           clipBehavior: Clip.none,
           alignment: Alignment.centerRight,

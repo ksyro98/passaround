@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passaround/entities/pa_user.dart';
 import 'package:passaround/features/auth/ui/common/auth_fields.dart';
+import 'package:passaround/widgets/back_arrow.dart';
 import 'package:passaround/widgets/circled_letter.dart';
 import 'package:passaround/navigation/auth/log_in_go_route.dart';
 import 'package:passaround/widgets/loading_indicator.dart';
@@ -44,7 +45,7 @@ class _ProfileScreeState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(),
+        leading: const BackArrow(),
       ),
       body: SingleChildScrollView(
         child: Center(

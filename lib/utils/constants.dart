@@ -10,9 +10,8 @@ class ColorValues {
 }
 
 class AssetValues {
-  static const String lightThemeCircularLogo = 'assets/logo_circular_light_theme.png';
-  static const String darkThemeCircularLogo = 'assets/logo_circular_dark_theme.png';
-  static const String darkThemeLogoHalfBlackLarge = 'assets/logo_large_half_black.svg';
+  static const String logoCircular = 'assets/logo_circular.svg';
+  static const String logoHalfBlackLarge = 'assets/logo_large_half_black.svg';
   static const String googlePlayBadge = 'assets/google_play_badge.png';
 }
 

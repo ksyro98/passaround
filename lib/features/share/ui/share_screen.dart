@@ -38,7 +38,7 @@ class _ShareScreenState extends State<ShareScreen> {
           appBar: AppBar(
             title: const Text("PassAround", style: TextStyle(fontSize: 26)),
             actions: [
-              AboutAction(isMobile: isMobile),
+              const AboutAction(),
               ProfileAction(userId: user.id, username: user.username, isMobile: isMobile),
             ],
           ),

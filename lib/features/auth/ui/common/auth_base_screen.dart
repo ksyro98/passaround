@@ -92,9 +92,9 @@ class _AuthBaseScreenState extends State<AuthBaseScreen> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     const LogoCircular(),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
                     AuthHeaderText(widget.authHeaderText),
-                    const SizedBox(height: 10),
+                    // const SizedBox(height: 4),
                     AuthFields(
                       formKey: _formKey,
                       usernameController: _usernameController,
