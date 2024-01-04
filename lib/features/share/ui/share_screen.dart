@@ -4,8 +4,7 @@ import 'package:passaround/entities/pa_user_manager.dart';
 import 'package:passaround/features/share/bloc/share_bloc.dart';
 import 'package:passaround/features/share/ui/input/share_input_field.dart';
 import 'package:passaround/features/share/ui/list/share_items_list.dart';
-import 'package:passaround/features/share/ui/top_app_bar/about/about_action.dart';
-import 'package:passaround/features/share/ui/top_app_bar/profile/profile_action.dart';
+import 'package:passaround/features/share/ui/top_app_bar/share_app_bar.dart';
 import 'package:passaround/navigation/utils/functions.dart';
 
 import '../../../entities/pa_user.dart';
@@ -35,13 +34,7 @@ class _ShareScreenState extends State<ShareScreen> {
       builder: (context, constraints) {
         final bool isMobile = FormFactorsUtils.isSmallScreen(constraints.maxWidth);
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("PassAround", style: TextStyle(fontSize: 26)),
-            actions: [
-              const AboutAction(),
-              ProfileAction(userId: user.id, username: user.username, isMobile: isMobile),
-            ],
-          ),
+          appBar: ShareAppBar(user: user, isMobile: isMobile).get(),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: BlocConsumer<ShareBloc, ShareState>(
             listener: (BuildContext context, ShareState state) {
