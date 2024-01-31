@@ -6,6 +6,7 @@ import 'package:passaround/features/auth/ui/common/auth_base_screen.dart';
 import 'package:passaround/navigation/auth/sign_up_go_route.dart';
 
 import '../../../../navigation/auth/auth_extras.dart';
+import '../../../info/onboarding/onboarding_sheet.dart';
 
 class LogInScreen extends StatefulWidget {
   final String email;
@@ -18,6 +19,12 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+  @override
+  void initState() {
+    super.initState();
+    OnboardingSheet(context).showIfNeeded();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AuthBaseScreen(
