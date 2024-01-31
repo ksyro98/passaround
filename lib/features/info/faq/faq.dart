@@ -12,6 +12,12 @@ class Faq extends StatefulWidget {
 class _FaqState extends State<Faq> {
   final List<FrequentlyAskedQuestion> questions = [
     FrequentlyAskedQuestion(
+      question: "What is PassAround?",
+      shortAnswer: "PassAround is a simple and easy way to transfer text and files between your devices",
+      fullAnswer:
+          "You can simply create an account and use it to send any text, image, or file. You can then log in on any other device, using the same account, and access your files from there.\nPassAround is meant to be a way to share file between devices, it is not a permanent file storage, nor online file system.",
+    ),
+    FrequentlyAskedQuestion(
       question: "Is PassAround free?",
       shortAnswer: "Yes.",
       fullAnswer: "PassAround is currently completely free. :)",
@@ -31,7 +37,7 @@ class _FaqState extends State<Faq> {
       question: "Where are my data stored?",
       shortAnswer: "On Google's cloud.",
       fullAnswer:
-          "Cloud is like a big server, owned usually by a large company, parts of which are provided to others companies, organizations, or individuals.\nPassAround used Firebase (firestore and firebase storage), which is provided by Google, to sore your data.",
+          "Cloud is like a big server, owned often by a large company, parts of which are provided to others companies, organizations, or individuals.\nPassAround uses Firebase (firestore and firebase storage) to store your data, which is provided by Google.",
     ),
     FrequentlyAskedQuestion(
       question: "Are my data safe in PassAround?",
@@ -52,7 +58,7 @@ class _FaqState extends State<Faq> {
     FrequentlyAskedQuestion(
       question: "How can I update my account details, like my email?",
       fullAnswer:
-          "This feature will soon be added on the app.\nUntil then you can send as an email at info.thatcomeup@gmail.com.",
+          "This feature will soon be added to the app.\nUntil then you can send as an email at info.thatcomeup@gmail.com.",
     ),
     FrequentlyAskedQuestion(
       question: "I need support with PassAround. Where can I ask for help?",
@@ -70,10 +76,7 @@ class _FaqState extends State<Faq> {
           padding: const EdgeInsets.only(left: 17),
           child: Text(
             "Frequently Asked Questions",
-            style: TextStyle(
-              fontSize: 24,
-              color: Theme.of(context).colorScheme.primary
-            ),
+            style: TextStyle(fontSize: 24, color: Theme.of(context).colorScheme.primary),
           ),
         ),
         ...questions.map((e) => _getQnATexts(e)),
