@@ -32,7 +32,9 @@ class _SmallScreenShareInputFieldState extends State<SmallScreenShareInputField>
           Expanded(
             child: TextField(
               controller: widget.itemTextController,
-              maxLines: 1,
+              minLines: 1,
+              maxLines: 4,
+              keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
