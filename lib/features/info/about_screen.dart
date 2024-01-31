@@ -36,7 +36,7 @@ class _AboutScreenState extends State<AboutScreen> {
         Text.rich(
           TextSpan(
             children: [
-              const TextSpan(text: "The easiest way to "),
+              const TextSpan(text: "The simplest way to "),
               TextSpan(text: "transfer", style: TextStyle(color: Theme.of(context).colorScheme.primary)),
               const TextSpan(text: " text and files between your devices."),
             ],
