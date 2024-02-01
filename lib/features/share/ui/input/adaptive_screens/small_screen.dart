@@ -22,6 +22,15 @@ class SmallScreenShareInputField extends StatefulWidget {
 
 class _SmallScreenShareInputFieldState extends State<SmallScreenShareInputField> {
   bool _fileSelectionLoading = false;
+  bool _isTextInput = false;
+
+  void _updateInputType(isText) {
+    setState(() => _isTextInput = isText);
+  }
+
+  void _updateFileSelectionLoading(fileSelectionLoading) {
+    setState(() => _fileSelectionLoading = fileSelectionLoading);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,34 +44,41 @@ class _SmallScreenShareInputFieldState extends State<SmallScreenShareInputField>
               minLines: 1,
               maxLines: 4,
               keyboardType: TextInputType.multiline,
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    onPressed: widget.sending ? null : widget.sendTextItem,
-                    icon: const Icon(Icons.check),
-                  ),
-                  hintText: "Something awesome"),
+              onChanged: (value) => _updateInputType(value != ""),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Something awesome",
+              ),
             ),
           ),
           const SizedBox(width: 8),
           IconButton(
-            onPressed: (_fileSelectionLoading || widget.sending) ? null : _onFileSelectionPressed,
+            onPressed: (_fileSelectionLoading || widget.sending) ? null : _onIconPressed,
             icon: (_fileSelectionLoading || widget.sending)
                 ? SizedBox(
                     height: 24,
                     width: 24,
                     child: CircularProgressIndicator(strokeWidth: 2, value: widget.sendingProgress),
                   )
-                : const Icon(Icons.add, size: 30),
+                : _getIconFromInputType(),
           ),
         ],
       ),
     );
   }
 
+  Future<void> _onIconPressed() async => _isTextInput ? _onSendTextPressed() : await _onFileSelectionPressed();
+
+  Icon _getIconFromInputType() => _isTextInput ? const Icon(Icons.check) : const Icon(Icons.add, size: 30);
+
+  void _onSendTextPressed() {
+    widget.sendTextItem();
+    _updateInputType(false);
+  }
+
   Future<void> _onFileSelectionPressed() async {
-    setState(() => _fileSelectionLoading = true);
+    _updateFileSelectionLoading(true);
     await widget.sendFile();
-    setState(() => _fileSelectionLoading = false);
+    _updateFileSelectionLoading(false);
   }
 }
