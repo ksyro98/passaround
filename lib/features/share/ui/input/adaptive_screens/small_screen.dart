@@ -58,7 +58,10 @@ class _SmallScreenShareInputFieldState extends State<SmallScreenShareInputField>
                 ? SizedBox(
                     height: 24,
                     width: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2, value: widget.sendingProgress),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      value: widget.sendingProgress != 0 ? widget.sendingProgress : null,
+                    ),
                   )
                 : _getIconFromInputType(),
           ),
