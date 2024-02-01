@@ -16,6 +16,8 @@ class AssetValues {
   static const String onboardingIcon1 = 'assets/onboarding_icon_1.svg';
   static const String onboardingIcon2 = 'assets/onboarding_icon_2.svg';
   static const String onboardingIcon3 = 'assets/onboarding_icon_3.svg';
+  static const String githubBlackLogo = 'assets/github_mark.svg';
+  static const String githubWhiteLogo = 'assets/github_mark_white.svg';
 }
 
 class TypeValues {
@@ -39,4 +41,8 @@ class OnboardingValues {
   static const String firstText = "Create an account";
   static const String secondText = "Send any text, image, or file";
   static const String thirdText = "Log in from another device and access them";
+}
+
+class UrlValues {
+  static const String githubLink = "https://github.com/ksyro98/passaround";
 }

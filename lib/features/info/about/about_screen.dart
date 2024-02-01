@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:passaround/features/info/info_container.dart';
 import 'package:passaround/utils/constants.dart';
 import 'package:passaround/widgets/simple_snack_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -85,11 +88,52 @@ class _AboutScreenState extends State<AboutScreen> {
             ),
           ],
         ),
+        const SizedBox(height: 80),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              "PassAround is open source!",
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(width: 12),
+            _getGithubLogo(),
+          ],
+        ),
+        const SizedBox(height: 12),
       ],
     );
   }
 
+  Widget _getGithubLogo() {
+    final brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: _launchGithub,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 2),
+          child: SizedBox(
+            height: 26,
+            width: 26,
+            child: SvgPicture.asset(
+              isDarkMode ? AssetValues.githubWhiteLogo : AssetValues.githubBlackLogo,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   void _launchGooglePlay() {
-    SimpleSnackBar.show(context, "Almost there...");
+    SimpleSnackBar.show(context, "Coming very soon...");
+  }
+
+  Future<void> _launchGithub() async {
+    final Uri uri = Uri.parse(UrlValues.githubLink);
+    if (await canLaunchUrl(uri)) {
+      launchUrl(uri);
+    }
   }
 }
