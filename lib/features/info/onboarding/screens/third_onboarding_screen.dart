@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:passaround/features/info/onboarding/screens/widgets/learn_more_text.dart';
+import 'package:passaround/widgets/learn_more_text.dart';
 import 'package:passaround/features/info/onboarding/screens/widgets/onboarding_card.dart';
 import 'package:passaround/features/info/onboarding/screens/widgets/onboarding_icon.dart';
 
@@ -34,8 +34,8 @@ class ThirdOnboardingScreen extends StatelessWidget {
                 number: 3,
                 direction: OnboardingCardDirection.left,
               ),
-              SizedBox(height: 4),
-              LearnMoreText(),
+              SizedBox(height: 8),
+              LearnMoreText(fontSize: 16),
             ],
           ),
           OnboardingIcon(

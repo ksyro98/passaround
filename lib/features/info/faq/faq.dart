@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../entities/question.dart';
 
 class Faq extends StatefulWidget {
-  const Faq({super.key});
+  final List<int> expandedQuestions;
+
+  const Faq({super.key, required this.expandedQuestions});
 
   @override
   State<Faq> createState() => _FaqState();
 }
 
 class _FaqState extends State<Faq> {
-  final List<FrequentlyAskedQuestion> questions = [
+  final List<FrequentlyAskedQuestion> _questions = [
     FrequentlyAskedQuestion(
       question: "What is PassAround?",
       shortAnswer: "PassAround is a simple and easy way to transfer text and files between your devices",
@@ -68,6 +70,21 @@ class _FaqState extends State<Faq> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _setInitiallyExpandedQuestions();
+  }
+
+  void _setInitiallyExpandedQuestions() {
+    for (int i = 0; i < _questions.length; i++) {
+      if (widget.expandedQuestions.contains(i)) {
+        _questions[i].expanded = true;
+      }
+    }
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +96,8 @@ class _FaqState extends State<Faq> {
             style: TextStyle(fontSize: 24, color: Theme.of(context).colorScheme.primary),
           ),
         ),
-        ...questions.map((e) => _getQnATexts(e)),
+        // ...List.generate(_questions.length, (index) => _getQnATexts(_questions[index])),
+        ..._questions.map((e) => _getQnATexts(e)),
       ],
     );
   }

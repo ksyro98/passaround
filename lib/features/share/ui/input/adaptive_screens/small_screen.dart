@@ -35,7 +35,7 @@ class _SmallScreenShareInputFieldState extends State<SmallScreenShareInputField>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 8, 24),
+      padding: const EdgeInsets.fromLTRB(20, 0, 8, 42),
       child: Row(
         children: [
           Expanded(

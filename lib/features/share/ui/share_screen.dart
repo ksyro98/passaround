@@ -9,6 +9,7 @@ import 'package:passaround/navigation/utils/functions.dart';
 
 import '../../../entities/pa_user.dart';
 import '../../../utils/form_factors_utils.dart';
+import '../../../widgets/learn_more_text.dart';
 import '../../../widgets/simple_snack_bar.dart';
 
 class ShareScreen extends StatefulWidget {
@@ -44,7 +45,18 @@ class _ShareScreenState extends State<ShareScreen> {
               }
             },
             builder: (BuildContext context, ShareState state) {
-              return isMobile ? _getSmallScreen(state) : _getLargeScreen(state);
+              return Stack(
+                children: <Widget>[
+                  isMobile ? _getSmallScreen(state) : _getLargeScreen(state),
+                  Align(
+                    alignment: AlignmentDirectional.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: _getEncryptionWarning(),
+                    ),
+                  ),
+                ],
+              );
             },
           ),
         );
@@ -74,6 +86,31 @@ class _ShareScreenState extends State<ShareScreen> {
       children: [
         Expanded(child: ShareItemsList(state: state)),
         ShareInputField(state: state, isSmallScreen: true),
+      ],
+    );
+  }
+
+  Widget _getEncryptionWarning() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 1),
+          child: Icon(Icons.lock_open, size: 16, color: Theme.of(context).colorScheme.error),
+        ),
+        const SizedBox(width: 6),
+        RichText(
+          text: TextSpan(
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            children: const [
+              TextSpan(text: "Your data are "),
+              TextSpan(text: "not", style: TextStyle(fontWeight: FontWeight.bold)),
+              TextSpan(text: " encrypted. "),
+            ],
+          ),
+        ),
+        const LearnMoreText(),
       ],
     );
   }
