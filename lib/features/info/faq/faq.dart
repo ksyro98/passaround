@@ -45,7 +45,7 @@ class _FaqState extends State<Faq> {
       question: "Are my data safe in PassAround?",
       shortAnswer: "Yes, but they are not encrypted.",
       fullAnswer:
-          "To access your data someone needs access to your password or administrative access to the PassAround backend.\nHowever, your data are stored on PassAround's backend \"as is\". This means that when you send \"test\" the word \"test\" will be transferred through the Internet and stored on the cloud. If someone is tracking your Internet traffic, or if data from the Google cloud get leaked your data might get exposed.\nThis is why we strongly recommend you not to send any sensitive data through PassAround and to delete your data often.\n\nWe intend to implement encryption soon, so stay tuned!",
+          "To access your data someone needs access to your password or administrative access to the PassAround backend.\nHowever, your data are stored on PassAround's backend \"as is\". This means that when you send \"test\" the word \"test\" will be stored on the cloud. If data from the Google cloud get leaked your data might get exposed.\nThis is why we strongly recommend you not to send any sensitive data through PassAround and to delete your data often.\n\nWe intend to implement encryption soon, so stay tuned!",
     ),
     FrequentlyAskedQuestion(
       question: "How can I delete my account?",
