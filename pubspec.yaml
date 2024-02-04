@@ -2,7 +2,7 @@ name: passaround
 description: An app to help you pass around text, files, and images, between your devices.
 publish_to: 'none'
 
-version: 1.0.0+7
+version: 1.0.0+8
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
