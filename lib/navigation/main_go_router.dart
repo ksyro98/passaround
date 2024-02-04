@@ -3,6 +3,7 @@ import 'package:passaround/navigation/info/about_go_route.dart';
 import 'package:passaround/navigation/auth/log_in_go_route.dart';
 import 'package:passaround/navigation/image_go_route.dart';
 import 'package:passaround/navigation/info/faq_go_route.dart';
+import 'package:passaround/navigation/info/privacy_policy_go_route.dart';
 import 'package:passaround/navigation/onboarding_go_route.dart';
 import 'package:passaround/navigation/share_go_route.dart';
 import 'package:passaround/navigation/auth/sign_up_go_route.dart';
@@ -27,6 +28,7 @@ class MainGoRouter {
       AboutGoRoute().get(),
       FaqGoRoute().get(),
       MobileGuideGoRoute().get(),
+      PrivacyPolicyGoRoute().get(),
     ],
   );
 }

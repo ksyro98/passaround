@@ -12,7 +12,6 @@ class FaqGoRoute implements NavigationBase<GoRoute> {
         name: name,
         path: path,
         builder: (context, state) {
-          Logger.lPrint(state.pathParameters);
           final expandedQs = state.uri.queryParameters["expanded"]?.split("_").map((e) => int.parse(e)).toList() ?? [];
           return FaqScreen(expandedQuestions: expandedQs);
         },
