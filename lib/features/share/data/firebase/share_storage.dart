@@ -58,8 +58,10 @@ class ShareStorage {
     );
   }
 
-  Stream<Either<String, double>> _store(
-      {required UploadTask Function(Reference) action, required String firebasePath}) {
+  Stream<Either<String, double>> _store({
+    required UploadTask Function(Reference) action,
+    required String firebasePath,
+  }) {
     try {
       final userDir = _storageRef.child(firebasePath);
       final UploadTask task = action(userDir);
