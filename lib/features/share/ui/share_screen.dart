@@ -9,7 +9,7 @@ import 'package:passaround/navigation/utils/functions.dart';
 
 import '../../../entities/pa_user.dart';
 import '../../../utils/form_factors_utils.dart';
-import '../../../widgets/learn_more_text.dart';
+import '../../../widgets/clickable_texts/learn_more_text.dart';
 import '../../../widgets/simple_snack_bar.dart';
 
 class ShareScreen extends StatefulWidget {

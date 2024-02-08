@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:passaround/widgets/learn_more_text.dart';
 import 'package:passaround/features/info/onboarding/screens/widgets/onboarding_card.dart';
 import 'package:passaround/features/info/onboarding/screens/widgets/onboarding_icon.dart';
 
 import '../../../../utils/constants.dart';
+import '../../../../widgets/clickable_texts/learn_more_text.dart';
 import '../../../../widgets/single_child_scroll_view_for_column.dart';
 
 class ThirdOnboardingScreen extends StatelessWidget {

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passaround/navigation/info/faq_go_route.dart';
 
+import 'link_text_base.dart';
+
 class LearnMoreText extends StatelessWidget {
   final double? fontSize;
 
@@ -9,19 +11,10 @@ class LearnMoreText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () => _launchFaqScreen(context),
-        child: Text(
-          "Learn more",
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-            fontSize: fontSize,
-            decoration: TextDecoration.underline,
-          ),
-        ),
-      ),
+    return LinkTextBase(
+      text: "Learn more",
+      onClick: () => _launchFaqScreen(context),
+      fontSize: fontSize,
     );
   }
 
