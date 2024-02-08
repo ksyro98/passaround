@@ -22,6 +22,7 @@ class AssetValues {
   static const String onboardingIcon3 = 'assets/onboarding_icon_3.svg';
   static const String githubBlackLogo = 'assets/github_mark.svg';
   static const String githubWhiteLogo = 'assets/github_mark_white.svg';
+  static const String logoButterfliesFlying = 'assets/logo_butterflies_flying.svg';
 }
 
 class TypeValues {
