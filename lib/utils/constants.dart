@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+class ProjectValues {
+  static const String url = "https://passaround-tcu.web.app";
+}
+
 class FormFactorValues {
   static const int smallScreenThreshold = 620;
   static const int mediumScreenThreshold = 800;

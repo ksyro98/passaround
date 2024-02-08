@@ -27,7 +27,7 @@ class LearnMoreText extends StatelessWidget {
 
   Future<void> _launchFaqScreen(BuildContext context) async {
     // TODO change that when the new domain is used
-    // const String faqUrl = "https://passaround-tcu.web.app/faq?expanded=5";
+    // const String faqUrl = "${ProjectValues.url}/faq?expanded=5";
     // final Uri uri = Uri.parse(faqUrl);
     // if(await canLaunchUrl(uri)) {
     //   launchUrl(uri);
