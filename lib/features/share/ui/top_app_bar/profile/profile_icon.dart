@@ -7,7 +7,10 @@ class ProfileIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Padding(
       padding: EdgeInsets.only(right: 8),
-      child: Icon(Icons.account_circle_outlined),
+      child: Tooltip(
+        message: "Profile",
+        child: Icon(Icons.account_circle_outlined),
+      ),
     );
   }
 }

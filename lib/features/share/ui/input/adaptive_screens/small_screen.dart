@@ -72,7 +72,9 @@ class _SmallScreenShareInputFieldState extends State<SmallScreenShareInputField>
 
   Future<void> _onIconPressed() async => _isTextInput ? _onSendTextPressed() : await _onFileSelectionPressed();
 
-  Icon _getIconFromInputType() => _isTextInput ? const Icon(Icons.check) : const Icon(Icons.add, size: 30);
+  Widget _getIconFromInputType() => _isTextInput
+      ? const Tooltip(message: "Send", child: Icon(Icons.check))
+      : const Tooltip(message: "Add Image or File", child: Icon(Icons.add, size: 30));
 
   void _onSendTextPressed() {
     widget.sendTextItem();

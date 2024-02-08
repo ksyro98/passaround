@@ -16,9 +16,12 @@ class PasteButton extends StatelessWidget with Pasteable {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: isDisabled ? null : () => paste(onTextPasted: onTextPasted, onImagePasted: onImagePasted),
-      icon: Icon(Icons.paste, color: Theme.of(context).colorScheme.primary),
+    return Tooltip(
+      message: "Paste",
+      child: IconButton(
+        onPressed: isDisabled ? null : () => paste(onTextPasted: onTextPasted, onImagePasted: onImagePasted),
+        icon: Icon(Icons.paste, color: Theme.of(context).colorScheme.primary),
+      ),
     );
   }
 }

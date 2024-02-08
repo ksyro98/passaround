@@ -101,16 +101,13 @@ class _ProfileScreeState extends State<ProfileScreen> {
     return kIsWeb
         ? TextButton(
             onPressed: _logOut,
-            child: Text(
-              "Log Out",
-              style: TextStyle(color: Theme.of(context).colorScheme.error),
-            ),
+            child: Text("Log Out", style: TextStyle(color: Theme.of(context).colorScheme.error)),
           )
-        : IconButton(
-            onPressed: _logOut,
-            icon: Icon(
-              Icons.logout_outlined,
-              color: Theme.of(context).colorScheme.error,
+        : Tooltip(
+            message: "Log Out",
+            child: IconButton(
+              onPressed: _logOut,
+              icon: Icon(Icons.logout_outlined, color: Theme.of(context).colorScheme.error),
             ),
           );
   }
