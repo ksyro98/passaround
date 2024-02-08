@@ -16,7 +16,7 @@ dependencies:
   cloud_firestore: ^4.13.6
   cupertino_icons: ^1.0.6
   dynamic_color: ^1.6.8
-  firebase_auth: ^4.15.0
+  firebase_auth: ^4.17.4
   super_drag_and_drop: ^0.8.0
   super_clipboard: ^0.8.0
   file_picker: ^6.1.1
