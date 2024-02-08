@@ -14,7 +14,7 @@ class ShareAppBar {
 
   AppBar get() {
     return AppBar(
-      title: const Text("PassAround", style: TextStyle(fontSize: 26)),
+      title: Text("Welcome, ${user.username}!", style: const TextStyle(fontSize: 26)),
       actions: [
         const AboutAction(),
         const FaqAction(),
