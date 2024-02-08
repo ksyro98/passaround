@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,7 @@ import 'package:passaround/features/auth/ui/common/auth_fields.dart';
 import 'package:passaround/widgets/back_arrow.dart';
 import 'package:passaround/widgets/circled_letter.dart';
 import 'package:passaround/navigation/auth/log_in_go_route.dart';
+import 'package:passaround/widgets/clickable_texts/open_on_the_web_text.dart';
 import 'package:passaround/widgets/loading_indicator.dart';
 
 import '../../../navigation/utils/functions.dart';
@@ -46,6 +48,12 @@ class _ProfileScreeState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: const BackArrow(),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 2),
+            child: _getLogOutAction(),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -76,14 +84,8 @@ class _ProfileScreeState extends State<ProfileScreen> {
                         excludePasswordField: true,
                         areDisabled: !allowEdit,
                       ),
-                      const SizedBox(height: 16),
-                      TextButton(
-                        onPressed: _logOut,
-                        child: Text(
-                          "Log Out",
-                          style: TextStyle(color: Theme.of(context).colorScheme.error),
-                        ),
-                      ),
+                      const SizedBox(height: 32),
+                      if (!kIsWeb) const OpenOnTheWebText(),
                     ],
                   );
                 }
@@ -93,6 +95,24 @@ class _ProfileScreeState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Widget _getLogOutAction() {
+    return kIsWeb
+        ? TextButton(
+            onPressed: _logOut,
+            child: Text(
+              "Log Out",
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          )
+        : IconButton(
+            onPressed: _logOut,
+            icon: Icon(
+              Icons.logout_outlined,
+              color: Theme.of(context).colorScheme.error,
+            ),
+          );
   }
 
   void _navigateToLogInScreen() => GoRouter.of(context).goNamed(LogInGoRoute.name);
