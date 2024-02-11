@@ -79,7 +79,15 @@ class _AuthFieldsState extends State<AuthFields> {
                 labelText: "Password",
                 suffixIcon: IconButton(
                   onPressed: _togglePasswordVisibility,
-                  icon: _isPasswordVisible ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
+                  icon: _isPasswordVisible
+                      ? const Tooltip(
+                          message: "Hide password",
+                          child: Icon(Icons.visibility_off, semanticLabel: "Hide password"),
+                        )
+                      : const Tooltip(
+                          message: "Show password",
+                          child: Icon(Icons.visibility, semanticLabel: "Show password"),
+                        ),
                 ),
               ),
             ),
@@ -110,7 +118,7 @@ class _AuthFieldsState extends State<AuthFields> {
     if (widget.onEnterPressedAtPassword != null) {
       final AuthFormValidator validator = AuthFormValidator(widget.formKey);
       bool isValid = validator.validate();
-      if(isValid) {
+      if (isValid) {
         widget.onEnterPressedAtPassword!();
       }
     }
