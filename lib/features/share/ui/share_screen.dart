@@ -33,9 +33,9 @@ class _ShareScreenState extends State<ShareScreen> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final bool isMobile = FormFactorsUtils.isSmallScreen(constraints.maxWidth);
+        final bool isSmallScreen = FormFactorsUtils.isSmallScreen(constraints.maxWidth);
         return Scaffold(
-          appBar: ShareAppBar(user: user, isMobile: isMobile).get(),
+          appBar: ShareAppBar(user: user, isMobile: isSmallScreen).get(),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: BlocConsumer<ShareBloc, ShareState>(
             listener: (BuildContext context, ShareState state) {
@@ -47,12 +47,12 @@ class _ShareScreenState extends State<ShareScreen> {
             builder: (BuildContext context, ShareState state) {
               return Stack(
                 children: <Widget>[
-                  isMobile ? _getSmallScreen(state) : _getLargeScreen(state),
+                  isSmallScreen ? _getSmallScreen(state) : _getLargeScreen(state),
                   Align(
                     alignment: AlignmentDirectional.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 12),
-                      child: _getEncryptionWarning(),
+                      child: _getEncryptionWarning(isSmallScreen: isSmallScreen),
                     ),
                   ),
                 ],
@@ -90,27 +90,37 @@ class _ShareScreenState extends State<ShareScreen> {
     );
   }
 
-  Widget _getEncryptionWarning() {
+  Widget _getEncryptionWarning({required bool isSmallScreen}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 1),
-          child: Icon(Icons.lock_open, size: 16, color: Theme.of(context).colorScheme.error),
-        ),
-        const SizedBox(width: 6),
-        RichText(
-          text: TextSpan(
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-            children: const [
-              TextSpan(text: "Your data are "),
-              TextSpan(text: "not", style: TextStyle(fontWeight: FontWeight.bold)),
-              TextSpan(text: " encrypted. "),
+        Expanded(flex: isSmallScreen ? 0 : 6, child: const SizedBox()),
+        Expanded(
+          flex: 4,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 1),
+                child: Icon(Icons.lock_open, size: 16, color: Theme.of(context).colorScheme.error),
+              ),
+              const SizedBox(width: 6),
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                  children: const [
+                    TextSpan(text: "Your data are "),
+                    TextSpan(text: "not", style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: " encrypted. "),
+                  ],
+                ),
+              ),
+              const LearnMoreText(),
             ],
           ),
         ),
-        const LearnMoreText(),
       ],
     );
   }
