@@ -7,6 +7,8 @@ class ProjectValues {
 class FormFactorValues {
   static const int smallScreenThreshold = 620;
   static const int mediumScreenThreshold = 800;
+  static const int largeScreenItemWidthFlex = 6;
+  static const int largeScreenInputWidthFlex = 4;
 }
 
 class ColorValues {

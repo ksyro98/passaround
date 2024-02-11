@@ -6,6 +6,7 @@ import 'package:passaround/features/share/ui/input/share_input_field.dart';
 import 'package:passaround/features/share/ui/list/share_items_list.dart';
 import 'package:passaround/features/share/ui/top_app_bar/share_app_bar.dart';
 import 'package:passaround/navigation/utils/functions.dart';
+import 'package:passaround/utils/constants.dart';
 
 import '../../../entities/pa_user.dart';
 import '../../../utils/form_factors_utils.dart';
@@ -69,9 +70,9 @@ class _ShareScreenState extends State<ShareScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(flex: 6, child: ShareItemsList(state: state)),
+        Expanded(flex: FormFactorValues.largeScreenItemWidthFlex, child: ShareItemsList(state: state)),
         Expanded(
-          flex: 4,
+          flex: FormFactorValues.largeScreenInputWidthFlex,
           child: SingleChildScrollView(
             child: ShareInputField(state: state, isSmallScreen: false),
           ),
@@ -95,9 +96,9 @@ class _ShareScreenState extends State<ShareScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(flex: isSmallScreen ? 0 : 6, child: const SizedBox()),
+        Expanded(flex: isSmallScreen ? 0 : FormFactorValues.largeScreenItemWidthFlex, child: const SizedBox()),
         Expanded(
-          flex: 4,
+          flex: FormFactorValues.largeScreenInputWidthFlex,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
