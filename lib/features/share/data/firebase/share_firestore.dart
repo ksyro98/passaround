@@ -14,7 +14,7 @@ class ShareFirestore {
   }
 
   Query<Map<String, dynamic>> get _queriedSharedCollection =>
-      _sharedCollection.orderBy('ts', descending: true).limit(50);
+      _sharedCollection.orderBy('ts', descending: true).limit(75);
 
   Future<List<Map<String, dynamic>>?> getItems() async {
     try {
