@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "653731631478",
+    "project_id": "passaround-tcu",
+    "storage_bucket": "passaround-tcu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653731631478:android:ac04d2f3bca7ced75c2a57",
+        "android_client_info": {
+          "package_name": "io.thatcomeup.passaround"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653731631478-gkuh08vcn7fnqg9gogaj9d7kbcmafrng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANMa7tNhUV4KWZAH1yGrIpsOfo5uKloX0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653731631478-gkuh08vcn7fnqg9gogaj9d7kbcmafrng.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "653731631478-c3kg93dokn21nqerfov7vn893vvcpt90.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.thatcomeup.passaround"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

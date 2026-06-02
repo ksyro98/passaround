@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:passaround/features/info/faq/faq_screen.dart';
 import 'package:passaround/navigation/navigation_base.dart';
-import 'package:passaround/utils/logger.dart';
 
 class FaqGoRoute implements NavigationBase<GoRoute> {
   static const String name = 'faq';
